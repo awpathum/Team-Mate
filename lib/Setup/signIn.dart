@@ -22,24 +22,26 @@ class _LoginPageState extends State<LoginPage> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            TextFormField(
-              validator: (input) {
-                if (input.isEmpty) {
-                  return 'Please Enter Email';
-                }
-              },
-              onSaved: (input) => _email = input,
-              decoration: InputDecoration(labelText: 'Enter Email'),
-            ),
-            TextFormField(
-              validator: (input) {
-                if (input.isEmpty) {
-                  return 'Please enter password';
-                }
-              },
-              onSaved: (input) => _password = input,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+            Row(
+              TextFormField(
+                validator: (input) {
+                  if (input.isEmpty) {
+                    return 'Please Enter Email';
+                  }
+                },
+                onSaved: (input) => _email = input,
+                decoration: InputDecoration(labelText: 'Enter Email'),
+              ),
+              TextFormField(
+                validator: (input) {
+                  if (input.isEmpty) {
+                    return 'Please enter password';
+                  }
+                },
+                onSaved: (input) => _password = input,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
             ),
             RaisedButton(
               onPressed: signIn,
@@ -51,22 +53,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> signIn() async{
+  Future<void> signIn() async {
     //validate fields
     final formState = _formKey.currentState;
     if (formState.validate()) {
       //loginto firebase
       formState.save();
-      try{
-          FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email,password: _password);
-          //navigate to home
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-      }catch(e){
-          print(e.message);
+      try {
+        FirebaseUser user = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+        //navigate to home
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      } catch (e) {
+        print(e.message);
       }
-      
-
     }
-    
   }
 }
