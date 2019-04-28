@@ -26,7 +26,7 @@ class _addNewMemberState extends State<addNewMember> {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  
+
                 ],
               ),
             )
