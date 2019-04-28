@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-
 import 'package:teamapp/Pages/home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,55 +17,63 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text('Sign in'),
       ),
-      body: Form(
-        key: _formKey,
+      body: Center(
         child: Column(
           children: <Widget>[
-            TextFormField(
-              validator: (input) {
-                if (input.isEmpty) {
-                  return 'Please Enter Email';
-                }
-              },
-              onSaved: (input) => _email = input,
-              decoration: InputDecoration(labelText: 'Enter Email'),
+            Container(
+              margin: const EdgeInsets.all(50.0),
             ),
-            TextFormField(
-              validator: (input) {
-                if (input.isEmpty) {
-                  return 'Please enter password';
-                }
-              },
-              onSaved: (input) => _password = input,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    validator: (input) {
+                      if (input.isEmpty) {
+                        return 'Please Enter Email';
+                      }
+                    },
+                    onSaved: (input) => _email = input,
+                    decoration: InputDecoration(labelText: 'Enter Email'),
+                  ),
+                  TextFormField(
+                    validator: (input) {
+                      if (input.isEmpty) {
+                        return 'Please enter password';
+                      }
+                    },
+                    onSaved: (input) => _password = input,
+                    decoration: InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                  ),
+                  RaisedButton(
+                    onPressed: signIn,
+                    child: Text('Sign in'),
+                  )
+                ],
+              ),
             ),
-            RaisedButton(
-              onPressed: signIn,
-              child: Text('Sign in'),
-            )
           ],
         ),
       ),
     );
   }
 
-  Future<void> signIn() async{
+  Future<void> signIn() async {
     //validate fields
     final formState = _formKey.currentState;
     if (formState.validate()) {
       //loginto firebase
       formState.save();
-      try{
-          FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email,password: _password);
-          //navigate to home
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-      }catch(e){
-          print(e.message);
+      try {
+        FirebaseUser user = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+        //navigate to home
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      } catch (e) {
+        print(e.message);
       }
-      
-
     }
-    
   }
 }
