@@ -1,4 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+//import 'package:teamapp/Services/crud.dart';
 
 class addNewMember extends StatefulWidget {
   @override
@@ -6,12 +10,12 @@ class addNewMember extends StatefulWidget {
 }
 
 class _addNewMemberState extends State<addNewMember> {
+  File _image;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String _indexNo, _nicNo, _name, _faculty, _year, _telephone;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
     final indexField = TextFormField(
       validator: (input) {
         if (input.isEmpty) {
@@ -107,6 +111,41 @@ class _addNewMemberState extends State<addNewMember> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
       onSaved: (input) => _telephone = input,
     );
+
+    final submitButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: FloatingActionButton(
+        elevation: 5.0,
+        onPressed: () {
+          Navigator.of(context).pop();
+          Map memeberDetails = {'IndexNo': this._indexNo,'NIC': this._nicNo,'Name': this._name,'Faculty': _faculty,'Year': this._year,'Telephone':this._telephone};
+          
+        },
+        child: Icon(Icons.check),
+      ),
+    );
+
+    final imageField = Row(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child:
+              _image == null ? Text('No image selected.') : Image.file(_image),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: IconButton(
+            onPressed: getImage,
+            tooltip: 'Pick Image',
+            icon: Icon(Icons.add_a_photo),
+            iconSize: 40.0,
+          ),
+        ),
+      ],
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add New Member'),
@@ -116,44 +155,62 @@ class _addNewMemberState extends State<addNewMember> {
           child: Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 50.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                          height: 12.0,
-                        ),
-                        indexField,
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        nicField,
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        nameField,
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        facultyField,
-                        SizedBox(
-                          height: 45.0,
-                        ) ,
-                        yearField,
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        telephoneField,
-                  ],
-                ),
-              )
-            ),
+                padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 50.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      indexField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      nicField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      nameField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      facultyField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      yearField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      telephoneField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          imageField,
+                          SizedBox(
+                            width: 68.0,
+                          ),
+                          submitButton,
+                        ],
+                      )
+                    ],
+                  ),
+                )),
           ),
         ),
       ),
     );
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
   }
 }
