@@ -7,89 +7,135 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   @override
   Widget build(BuildContext context) {
+    final createSheet = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("Create Sheet",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final viewSheet = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("View Sheet",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final addnewMember = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => addNewMember())),
+        child: Text("Add New Member",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final checkAttendance = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("Check Attendance",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final viewProfile = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("View Profile",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final sendNotification = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("Send Notification",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('Create Sheet'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 12.0,
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('View Sheet'),
+                  createSheet,
+                  SizedBox(
+                    height: 45.0,
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => addNewMember())),
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('Add New Member'),
+                  viewSheet,
+                  SizedBox(
+                    height: 45.0,
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('Check Attendance'),
+                  addnewMember,
+                  SizedBox(
+                    height: 45.0,
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('View Profile'),
+                  checkAttendance,
+                  SizedBox(
+                    height: 45.0,
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(15.0),
-                    child: Text('Send Notification'),
+                  viewProfile,
+                  SizedBox(
+                    height: 45.0,
                   ),
-                ),
+                  sendNotification,
+                ],
               ),
-            ],
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

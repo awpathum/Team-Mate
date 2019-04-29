@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teamapp/Setup/signIn.dart';
+import 'package:teamapp/Pages/signIn.dart';
 
 
 void main() => runApp(MyApp());
