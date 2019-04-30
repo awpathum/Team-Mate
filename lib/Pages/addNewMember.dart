@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
+import 'package:teamapp/Services/crud.dart';
 //import 'package:teamapp/Services/crud.dart';
 
 class addNewMember extends StatefulWidget {
@@ -10,6 +11,7 @@ class addNewMember extends StatefulWidget {
 }
 
 class _addNewMemberState extends State<addNewMember> {
+  crudMethods crudObj = new crudMethods();
   File _image;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String _indexNo, _nicNo, _name, _faculty, _year, _telephone;
@@ -119,9 +121,14 @@ class _addNewMemberState extends State<addNewMember> {
       child: FloatingActionButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.of(context).pop();
-          Map memeberDetails = {'IndexNo': this._indexNo,'NIC': this._nicNo,'Name': this._name,'Faculty': _faculty,'Year': this._year,'Telephone':this._telephone};
-          
+          //Navigator.of(context).pop();
+          Map<String, String> memeberDetails = {'IndexNo': this._indexNo,'NIC': this._nicNo,'Name': this._name,'Faculty': _faculty,'Year': this._year,'Telephone':this._telephone};
+          crudObj.addData(memeberDetails).then((result){
+            print('Done');
+          }).catchError((e){
+            print(e);
+          });
+          print('submit');
         },
         child: Icon(Icons.check),
       ),
