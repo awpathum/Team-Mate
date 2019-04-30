@@ -15,7 +15,8 @@ class _addNewMemberState extends State<addNewMember> {
   File _image;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String _indexNo, _nicNo, _name, _faculty, _year, _telephone;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final indexField = TextFormField(
@@ -122,9 +123,11 @@ class _addNewMemberState extends State<addNewMember> {
         elevation: 5.0,
         onPressed: () {
           //Navigator.of(context).pop();
+          _formKey.currentState.save();
           Map<String, String> memeberDetails = {'IndexNo': this._indexNo,'NIC': this._nicNo,'Name': this._name,'Faculty': _faculty,'Year': this._year,'Telephone':this._telephone};
           crudObj.addData(memeberDetails).then((result){
             print('Done');
+            print(this._indexNo);
           }).catchError((e){
             print(e);
           });
