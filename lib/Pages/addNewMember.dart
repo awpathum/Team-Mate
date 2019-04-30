@@ -4,7 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:keyboard/keyboard.dart';
 //import 'package:teamapp/Services/crud.dart';
+import 'package:teamapp/CustomClass/memberData.dart';
 
 class addNewMember extends StatefulWidget {
   @override
@@ -15,8 +17,35 @@ class _addNewMemberState extends State<addNewMember> {
   crudMethods crudObj = new crudMethods();
   File _image;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  String _indexNo, _nicNo, _name, _faculty, _year, _telephone;
+  //String _indexNo, _nicNo, _name, _faculty, _telephone,_year;
   final _formKey = GlobalKey<FormState>();
+  var indexmemData;
+  var useIndex;
+  var nicmemeData;
+  var useNIC;
+  var namememData;
+  var useName;
+  var facultymemData;
+  var useFaculty;
+  var telephonememData;
+  var useTelephone;
+  var yearmemData;
+  var useYear;
+
+  _addNewMemberState(){
+    var indexmemeData = new memData();
+    useIndex = indexmemeData.indexNo;
+    var nicmemeData = new memData();
+    useIndex = nicmemeData.indexNo;
+    var namememeData = new memData();
+    useIndex = namememeData.indexNo;
+    var facultymemeData = new memData();
+    useIndex = facultymemeData.indexNo;
+    var telephonememeData = new memData();
+    useIndex = telephonememeData.indexNo;
+    var yearmemeData = new memData();
+    useIndex = yearmemeData.indexNo;
+  }
   //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -33,7 +62,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Index Number",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _indexNo = input,
+      onSaved: (input) => useIndex = input,
     );
 
     final nicField = TextFormField(
@@ -49,7 +78,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "NIC Number",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _nicNo = input,
+      onSaved: (input) => useNIC = input,
     );
 
     final nameField = TextFormField(
@@ -65,7 +94,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _name = input,
+      onSaved: (input) => useName= input,
     );
 
     final facultyField = TextFormField(
@@ -81,13 +110,16 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Faculty",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _faculty = input,
+      onSaved: (input) => useFaculty = input,
     );
 
     final yearField = TextFormField(
       validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter The Year';
+        }
+        if(input is String){
+          return('Please Enter a Valid Year');
         }
       },
       obscureText: false,
@@ -97,7 +129,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Year",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _year = input,
+      onSaved: (input) => useYear = input,
     );
 
     final telephoneField = TextFormField(
@@ -113,7 +145,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Telephone",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => _telephone = input,
+      onSaved: (input) => useTelephone = input,
     );
 
     final submitButton = Material(
@@ -125,13 +157,13 @@ class _addNewMemberState extends State<addNewMember> {
         onPressed: () {
           //Navigator.of(context).pop();
           _formKey.currentState.save();
-          Map<String, String> memeberDetails = {
-            'IndexNo': this._indexNo,
-            'NIC': this._nicNo,
-            'Name': this._name,
-            'Faculty': _faculty,
-            'Year': this._year,
-            'Telephone': this._telephone
+          Map <String,dynamic> memeberDetails = {
+            'IndexNo': this.useIndex,
+            'NIC': this.useNIC,
+            'Name': this.useName,
+            'Faculty': useFaculty,
+            'Year': this.useYear,
+            'Telephone': this.useTelephone,
           };
           crudObj.addData(memeberDetails).then((result) {
             _formKey.currentState.reset();
