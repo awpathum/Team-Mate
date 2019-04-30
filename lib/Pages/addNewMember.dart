@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard/keyboard.dart';
-//import 'package:teamapp/Services/crud.dart';
 import 'package:teamapp/CustomClass/memberData.dart';
 
 class addNewMember extends StatefulWidget {
@@ -15,7 +14,7 @@ class addNewMember extends StatefulWidget {
 
 class _addNewMemberState extends State<addNewMember> {
   crudMethods crudObj = new crudMethods();
-  File _image;
+  File image;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   //String _indexNo, _nicNo, _name, _faculty, _telephone,_year;
   final _formKey = GlobalKey<FormState>();
@@ -31,20 +30,24 @@ class _addNewMemberState extends State<addNewMember> {
   var useTelephone;
   var yearmemData;
   var useYear;
+  var imagememData;
+  var useimage;
 
   _addNewMemberState(){
     var indexmemeData = new memData();
     useIndex = indexmemeData.indexNo;
     var nicmemeData = new memData();
-    useIndex = nicmemeData.indexNo;
+    useIndex = nicmemeData.nicNo;
     var namememeData = new memData();
-    useIndex = namememeData.indexNo;
+    useIndex = namememeData.name;
     var facultymemeData = new memData();
-    useIndex = facultymemeData.indexNo;
+    useIndex = facultymemeData.faculty;
     var telephonememeData = new memData();
-    useIndex = telephonememeData.indexNo;
+    useIndex = telephonememeData.telephone;
     var yearmemeData = new memData();
-    useIndex = yearmemeData.indexNo;
+    useIndex = yearmemeData.year;
+    var imagememeData = new memData();
+    useIndex = imagememeData.image;
   }
   //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -164,9 +167,11 @@ class _addNewMemberState extends State<addNewMember> {
             'Faculty': useFaculty,
             'Year': this.useYear,
             'Telephone': this.useTelephone,
+            'Profilepic': this.useimage,
           };
           crudObj.addData(memeberDetails).then((result) {
             _formKey.currentState.reset();
+            print(this.useimage);
             Fluttertoast.showToast(
                 msg: "Done",
                 toastLength: Toast.LENGTH_SHORT,
@@ -188,7 +193,7 @@ class _addNewMemberState extends State<addNewMember> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child:
-              _image == null ? Text('No image selected.') : Image.file(_image),
+              image == null ? Text('No image selected.') : Image.file(image),
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
@@ -263,10 +268,18 @@ class _addNewMemberState extends State<addNewMember> {
     );
   }
 
-  Future getImage() async {
+ /* Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
+    });
+  }*/
+
+   Future getImage() async {
+    File picture = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxWidth: 150, maxHeight: 150.0);
+    setState(() {
+      image = picture;
     });
   }
 }
