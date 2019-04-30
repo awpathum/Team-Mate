@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:teamapp/Services/crud.dart';
 
 class addNewMember extends StatefulWidget {
@@ -124,14 +125,27 @@ class _addNewMemberState extends State<addNewMember> {
         onPressed: () {
           //Navigator.of(context).pop();
           _formKey.currentState.save();
-          Map<String, String> memeberDetails = {'IndexNo': this._indexNo,'NIC': this._nicNo,'Name': this._name,'Faculty': _faculty,'Year': this._year,'Telephone':this._telephone};
-          crudObj.addData(memeberDetails).then((result){
-            print('Done');
-            print(this._indexNo);
-          }).catchError((e){
+          Map<String, String> memeberDetails = {
+            'IndexNo': this._indexNo,
+            'NIC': this._nicNo,
+            'Name': this._name,
+            'Faculty': _faculty,
+            'Year': this._year,
+            'Telephone': this._telephone
+          };
+          crudObj.addData(memeberDetails).then((result) {
+            _formKey.currentState.reset();
+            Fluttertoast.showToast(
+                msg: "Done",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.black54,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }).catchError((e) {
             print(e);
           });
-          print('submit');
         },
         child: Icon(Icons.check),
       ),
