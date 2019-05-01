@@ -37,6 +37,8 @@ class _addNewMemberState extends State<addNewMember> {
   var useYear;
   var imagememData;
   var useimage;
+  var fnamememData;
+  var useFname;
 
   _addNewMemberState() {
     var indexmemeData = new memData();
@@ -53,6 +55,8 @@ class _addNewMemberState extends State<addNewMember> {
     useIndex = yearmemeData.year;
     var imagememeData = new memData();
     useIndex = imagememeData.image;
+    var fnamememData = new memData();
+    useFname = facultymemeData.fname;
   }
   //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -62,7 +66,7 @@ class _addNewMemberState extends State<addNewMember> {
         if (input.isEmpty) {
           return 'Please Enter Index Number';
         }
-        if (input.substring(0, 1) != '20') {
+        if (input.substring(0, 2) != '20') {
           return 'Index number not valid';
         }
 
@@ -110,11 +114,27 @@ class _addNewMemberState extends State<addNewMember> {
       style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Name",
+          hintText: "Name With Initials",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
       onSaved: (input) => useName = input,
     );
+    final fnameField = TextFormField(
+      validator: (input) {
+        if (input.isEmpty) {
+          return 'Please Enter First Name';
+        }
+      },
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "First Name",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onSaved: (input) => useFname = input,
+    );
+
 
     final facultyField = TextFormField(
       /* validator: (input) {
@@ -242,6 +262,10 @@ class _addNewMemberState extends State<addNewMember> {
                       SizedBox(
                         height: 45.0,
                       ),
+                      fnameField,
+                      SizedBox(
+                        height: 45.0,
+                      ),
                       facultyField,
                       SizedBox(
                         height: 45.0,
@@ -297,6 +321,7 @@ class _addNewMemberState extends State<addNewMember> {
       'IndexNo': this.useIndex,
       'NIC': this.useNIC,
       'Name': this.useName,
+      'First Name': this.useFname,
       'Faculty': useFaculty,
       'Year': this.useYear,
       'Telephone': this.useTelephone,
