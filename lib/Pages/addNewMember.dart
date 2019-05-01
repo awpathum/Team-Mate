@@ -74,11 +74,11 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final nicField = TextFormField(
-      validator: (input) {
+      /*validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter NIC Number';
         }
-      },
+      },*/
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -106,11 +106,11 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final facultyField = TextFormField(
-      validator: (input) {
+     /* validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter The Faculty';
         }
-      },
+      },*/
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -123,12 +123,12 @@ class _addNewMemberState extends State<addNewMember> {
 
     final yearField = TextFormField(
       validator: (input) {
-        if (input.isEmpty) {
+       /* if (input.isEmpty) {
           return 'Please Enter The Year';
         }
         if (input is String) {
           return ('Please Enter a Valid Year');
-        }
+        }*/
       },
       obscureText: false,
       style: style,
@@ -141,11 +141,11 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final telephoneField = TextFormField(
-      validator: (input) {
+     /* validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter Contact Number';
         }
-      },
+      },*/
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -163,8 +163,11 @@ class _addNewMemberState extends State<addNewMember> {
       child: FloatingActionButton(
         elevation: 5.0,
         onPressed: () {
-          //Navigator.of(context).pop();
-          uploadData();
+          final FormState = _formKey.currentState;
+
+          if (FormState.validate()) {
+            uploadData();
+          }
         },
         child: Icon(Icons.check),
       ),
