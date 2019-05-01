@@ -164,32 +164,7 @@ class _addNewMemberState extends State<addNewMember> {
         elevation: 5.0,
         onPressed: () {
           //Navigator.of(context).pop();
-          _formKey.currentState.save();
-          Map<String, dynamic> memeberDetails = {
-            'IndexNo': this.useIndex,
-            'NIC': this.useNIC,
-            'Name': this.useName,
-            'Faculty': useFaculty,
-            'Year': this.useYear,
-            'Telephone': this.useTelephone,
-            'Profilepic': this.useimage,
-          };
-          uploadImage();
-          crudObj.addData(memeberDetails).then((result) {
-            _formKey.currentState.reset();
-            //add image to firesorage
-
-            Fluttertoast.showToast(
-                msg: "Done",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.black54,
-                textColor: Colors.white,
-                fontSize: 16.0);
-          }).catchError((e) {
-            print(e);
-          });
+          uploadData();
         },
         child: Icon(Icons.check),
       ),
@@ -274,8 +249,6 @@ class _addNewMemberState extends State<addNewMember> {
     );
   }
 
- 
-
   Future getImage() async {
     File picture = await ImagePicker.pickImage(
         source: ImageSource.camera, maxWidth: 150, maxHeight: 150.0);
@@ -284,9 +257,9 @@ class _addNewMemberState extends State<addNewMember> {
     });
   }
 
-
-   Future uploadImage() async {
-    final StorageReference ref = FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
+  Future uploadImage() async {
+    final StorageReference ref =
+        FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
     final StorageUploadTask task = ref.putFile(image);
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     setState(() {
@@ -294,5 +267,33 @@ class _addNewMemberState extends State<addNewMember> {
       image = null;
     });
   }
-}
 
+  Future uploadData() async {
+    _formKey.currentState.save();
+    Map<String, dynamic> memeberDetails = {
+      'IndexNo': this.useIndex,
+      'NIC': this.useNIC,
+      'Name': this.useName,
+      'Faculty': useFaculty,
+      'Year': this.useYear,
+      'Telephone': this.useTelephone,
+      'Profilepic': this.useimage,
+    };
+    uploadImage();
+    crudObj.addData(memeberDetails).then((result) {
+      _formKey.currentState.reset();
+      //add image to firesorage
+
+      Fluttertoast.showToast(
+          msg: "Done",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }).catchError((e) {
+      print(e);
+    });
+  }
+}
