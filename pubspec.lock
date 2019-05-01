@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  date_utils:
+    dependency: transitive
+    description:
+      name: date_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+2"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -76,6 +83,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_calendar:
+    dependency: "direct main"
+    description:
+      name: flutter_calendar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.8"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -95,6 +109,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0+1"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.8"
   keyboard:
     dependency: "direct main"
     description:
@@ -191,6 +212,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.2"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   typed_data:
     dependency: transitive
     description:
