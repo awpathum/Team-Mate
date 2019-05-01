@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard/keyboard.dart';
 import 'package:teamapp/CustomClass/memberData.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class addNewMember extends StatefulWidget {
   @override
@@ -33,7 +38,7 @@ class _addNewMemberState extends State<addNewMember> {
   var imagememData;
   var useimage;
 
-  _addNewMemberState(){
+  _addNewMemberState() {
     var indexmemeData = new memData();
     useIndex = indexmemeData.indexNo;
     var nicmemeData = new memData();
@@ -97,7 +102,7 @@ class _addNewMemberState extends State<addNewMember> {
           hintText: "Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-      onSaved: (input) => useName= input,
+      onSaved: (input) => useName = input,
     );
 
     final facultyField = TextFormField(
@@ -121,8 +126,8 @@ class _addNewMemberState extends State<addNewMember> {
         if (input.isEmpty) {
           return 'Please Enter The Year';
         }
-        if(input is String){
-          return('Please Enter a Valid Year');
+        if (input is String) {
+          return ('Please Enter a Valid Year');
         }
       },
       obscureText: false,
@@ -160,7 +165,7 @@ class _addNewMemberState extends State<addNewMember> {
         onPressed: () {
           //Navigator.of(context).pop();
           _formKey.currentState.save();
-          Map <String,dynamic> memeberDetails = {
+          Map<String, dynamic> memeberDetails = {
             'IndexNo': this.useIndex,
             'NIC': this.useNIC,
             'Name': this.useName,
@@ -169,13 +174,15 @@ class _addNewMemberState extends State<addNewMember> {
             'Telephone': this.useTelephone,
             'Profilepic': this.useimage,
           };
+          uploadImage();
           crudObj.addData(memeberDetails).then((result) {
             _formKey.currentState.reset();
-            print(this.useimage);
+            //add image to firesorage
+
             Fluttertoast.showToast(
                 msg: "Done",
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
+                gravity: ToastGravity.BOTTOM,
                 timeInSecForIos: 1,
                 backgroundColor: Colors.black54,
                 textColor: Colors.white,
@@ -192,8 +199,7 @@ class _addNewMemberState extends State<addNewMember> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child:
-              image == null ? Text('No image selected.') : Image.file(image),
+          child: image == null ? Text('No image selected.') : Image.file(image),
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
@@ -268,18 +274,25 @@ class _addNewMemberState extends State<addNewMember> {
     );
   }
 
- /* Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = image;
-    });
-  }*/
+ 
 
-   Future getImage() async {
+  Future getImage() async {
     File picture = await ImagePicker.pickImage(
         source: ImageSource.camera, maxWidth: 150, maxHeight: 150.0);
     setState(() {
       image = picture;
     });
   }
+
+
+   Future uploadImage() async {
+    final StorageReference ref = FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
+    final StorageUploadTask task = ref.putFile(image);
+    StorageTaskSnapshot taskSnapshot = await task.onComplete;
+    setState(() {
+      print('uploaded');
+      image = null;
+    });
+  }
 }
+
