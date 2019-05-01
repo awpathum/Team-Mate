@@ -62,6 +62,13 @@ class _addNewMemberState extends State<addNewMember> {
         if (input.isEmpty) {
           return 'Please Enter Index Number';
         }
+        if (input.substring(0, 1) != '20') {
+          return 'Index number not valid';
+        }
+
+        /*if (input.length != 9) {
+          return 'Index Number not valid';
+        }*/
       },
       obscureText: false,
       style: style,
@@ -74,7 +81,11 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final nicField = TextFormField(
-      /*validator: (input) {
+      validator: (input){
+        if(!input.endsWith('V')){
+          return 'NIC not valid';
+        }
+      }, /*{
         if (input.isEmpty) {
           return 'Please Enter NIC Number';
         }
@@ -106,7 +117,7 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final facultyField = TextFormField(
-     /* validator: (input) {
+      /* validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter The Faculty';
         }
@@ -123,7 +134,16 @@ class _addNewMemberState extends State<addNewMember> {
 
     final yearField = TextFormField(
       validator: (input) {
-       /* if (input.isEmpty) {
+        if(input.isNotEmpty){
+          if (!(input.startsWith('1') ||
+            input.startsWith('2') ||
+            input.startsWith('3') ||
+            input.startsWith('4') ||
+            input.startsWith('5'))) {
+          return 'Year is not valid';
+        }
+        }
+        /* if (input.isEmpty) {
           return 'Please Enter The Year';
         }
         if (input is String) {
@@ -141,7 +161,7 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final telephoneField = TextFormField(
-     /* validator: (input) {
+      /* validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter Contact Number';
         }
