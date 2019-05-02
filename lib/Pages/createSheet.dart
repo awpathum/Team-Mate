@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:teamapp/Services/ListPage.dart';
 
 class CreateSheet extends StatefulWidget {
   @override
@@ -16,21 +17,6 @@ class _CreateSheetState extends State<CreateSheet> {
   String strDate;
   String search;
 
-  // AsyncSnapshot<QuerySnapshot> get snapshot => null;
-
-  /* Future readData() async {
-    StreamBuilder(){
-      stream: Firestore.instance.collection('teamapp').snapshots().length.toString();
-      Builder:(context,snapshot){
-        if(!snapshot.hasData) return Text('Loading data.. Please Wait.');
-
-      };
-    }
-  }
-
-    getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
-    return map((doc) => new ListTile(title: new Text(doc["name"]))).toList();
-    }*/
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -122,7 +108,8 @@ class _CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-            Flexible(
+           ListPage(),
+            /*Flexible(
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -141,7 +128,7 @@ class _CreateSheetState extends State<CreateSheet> {
                   ],
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),

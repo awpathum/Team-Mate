@@ -321,7 +321,7 @@ class _addNewMemberState extends State<addNewMember> {
       'IndexNo': this.useIndex,
       'NIC': this.useNIC,
       'Name': this.useName,
-      'First Name': this.useFname,
+      'FirstName': this.useFname,
       'Faculty': useFaculty,
       'Year': this.useYear,
       'Telephone': this.useTelephone,
