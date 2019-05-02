@@ -76,6 +76,13 @@ class _CreateSheetState extends State<CreateSheet> {
       icon: Icon(Icons.search),
       iconSize: 25.0,
     );
+
+    final name = RadioListTile(
+      value: false,
+      title: Text('Hello'),
+      //onChanged: (),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Sheet'),
@@ -99,7 +106,7 @@ class _CreateSheetState extends State<CreateSheet> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
               child: Row(
                 children: <Widget>[
                   SizedBox(
@@ -115,17 +122,27 @@ class _CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-            Flexible(child: Column(
-              children: <Widget>[
-                Text('Hello',style:style),
-                Text('Hello',style:style),
-                Text('Hello',style:style),
-                Text('Hello',style:style),
-                
-              ],
-            ),)
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                  ],
+                ),
+              ),
+            ),
           ],
-          
         ),
       ),
     );
