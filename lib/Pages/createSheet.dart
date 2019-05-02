@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class CreateSheet extends StatefulWidget {
   @override
@@ -8,10 +10,28 @@ class CreateSheet extends StatefulWidget {
 }
 
 class _CreateSheetState extends State<CreateSheet> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0,color: Colors.black54);
+  TextStyle style = TextStyle(
+      fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
   DateTime _date = DateTime.now();
   String strDate;
   String search;
+
+  // AsyncSnapshot<QuerySnapshot> get snapshot => null;
+
+  /* Future readData() async {
+    StreamBuilder(){
+      stream: Firestore.instance.collection('teamapp').snapshots().length.toString();
+      Builder:(context,snapshot){
+        if(!snapshot.hasData) return Text('Loading data.. Please Wait.');
+
+      };
+    }
+  }
+
+    getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return map((doc) => new ListTile(title: new Text(doc["name"]))).toList();
+    }*/
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -58,7 +78,7 @@ class _CreateSheetState extends State<CreateSheet> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Member'),
+        title: Text('Create Sheet'),
       ),
       body: Center(
         child: Column(
@@ -85,8 +105,9 @@ class _CreateSheetState extends State<CreateSheet> {
                   SizedBox(
                     width: 10.0,
                   ),
-                  Flexible(child: searchText,),
-                  
+                  Flexible(
+                    child: searchText,
+                  ),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -94,34 +115,19 @@ class _CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
+            Flexible(child: Column(
+              children: <Widget>[
+                Text('Hello',style:style),
+                Text('Hello',style:style),
+                Text('Hello',style:style),
+                Text('Hello',style:style),
+                
+              ],
+            ),)
           ],
           
         ),
-        /*child: Padding(
-          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: 10.0,
-              ),
-              pickedDate,
-              SizedBox(
-                width: 10.0,
-              ),
-              pickDateButton,
-            ],
-          ),
-        ),*/
       ),
     );
   }
 }
-
-/*IconButton(
-            onPressed: (){
-              _selectDate(context);
-            },
-            tooltip: 'Pick Image',
-            icon: Icon(Icons.add_a_photo),
-            iconSize: 40.0,
-          ),*/
