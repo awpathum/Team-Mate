@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Services/search.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -62,7 +63,8 @@ class _HomeState extends State<Home> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Search())),
         child: Text("Check Attendance",
             textAlign: TextAlign.center,
             style: style.copyWith(

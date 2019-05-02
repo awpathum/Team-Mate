@@ -23,6 +23,7 @@ class _ListPageState extends State<ListPage> {
       title: Text('Hello'),
       //onChanged: (),
     );
+    
     return Container(
       child: FutureBuilder(
         future: getPosts(),
@@ -32,6 +33,8 @@ class _ListPageState extends State<ListPage> {
               child: Text("Loading"),
             );
           } else {
+            // final nameList = snapshot.data["Name"];
+            //print(nameList);
             return ListView.builder(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 scrollDirection: Axis.vertical,
@@ -39,11 +42,9 @@ class _ListPageState extends State<ListPage> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Center(
-                    child: SingleChildScrollView(
-                      child:  RadioListTile(
+                    child: RadioListTile(
                       value: false,
                       title: Text(snapshot.data[index].data["Name"]),
-                    ),
                     ),
                   );
                   /* return ListTile(
