@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
+
 class ListPage extends StatefulWidget {
   @override
   _ListPageState createState() => _ListPageState();
 }
+
+var presentMembers = new List();
+bool marked = false;
 
 class _ListPageState extends State<ListPage> {
   Future getPosts() async {
@@ -18,12 +23,6 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final name = RadioListTile(
-      value: false,
-      title: Text('Hello'),
-      //onChanged: (),
-    );
-    
     return Container(
       child: FutureBuilder(
         future: getPosts(),
@@ -42,10 +41,13 @@ class _ListPageState extends State<ListPage> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Center(
-                    child: RadioListTile(
-                      value: false,
-                      title: Text(snapshot.data[index].data["Name"]),
-                    ),
+                    child: CheckboxListTile(
+                        value: timeDilation != 1.0,
+                        title: Text(snapshot.data[index].data["Name"]),
+                        onChanged: (bool value) {
+                          markMember(snapshot.data[index].data["Name"]);
+                           setState(() { timeDilation = value ? 2.0 : 1.0; });
+                        }),
                   );
                   /* return ListTile(
                     title: Expanded(
@@ -57,5 +59,16 @@ class _ListPageState extends State<ListPage> {
         },
       ),
     );
+  }
+
+  markMember(String name) {
+    if (marked == true) {
+      presentMembers.add(name);
+      print(presentMembers);
+    }
+    else{
+      presentMembers.remove(name);
+      print(presentMembers);
+    }
   }
 }

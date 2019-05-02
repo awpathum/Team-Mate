@@ -72,6 +72,14 @@ class _CreateSheetState extends State<CreateSheet> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Sheet'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Done',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0,color: Colors.white)),
+            onPressed: (){
+              //print(ListPage.presentList);
+            },
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -108,25 +116,8 @@ class _CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-          
             Flexible(
                 child: ListPage(),
-                /*child: Column(
-                  children: <Widget>[
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                    name,
-                  ],
-                ),*/
             ),
           ],
         ),
