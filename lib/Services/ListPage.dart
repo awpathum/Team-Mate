@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
 import 'package:flutter/scheduler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:teamapp/Pages/createSheet.dart';
 import 'package:teamapp/Services/crud.dart';
 
@@ -56,12 +57,23 @@ class _ListPageState extends State<ListPage> {
       'Names': names,
       'Index': index,
     };
-
+var getDate = CreateSheetState();
+String date = getDate.strDate;
     //Firestore.instance.collection('teamapp').add(memberDetails).catchError((e){
     //print(e);
     //String today = CreateSheet.strDate;
     //print(today);
-    Firestore.instance.collection('today').document('12thmay').setData(attendanceSheet).catchError((e){
+    Firestore.instance.collection('today').document(date).setData(attendanceSheet).then((result){
+      print(date);
+       Fluttertoast.showToast(
+          msg: "Done",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }).catchError((e){
       print(e);
     });
     /*Firestore.instance
