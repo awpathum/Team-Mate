@@ -85,11 +85,12 @@ class _addNewMemberState extends State<addNewMember> {
     );
 
     final nicField = TextFormField(
-      validator: (input){
-        if(!input.endsWith('V')){
+      validator: (input) {
+        if (!input.endsWith('V')) {
           return 'NIC not valid';
         }
-      }, /*{
+      },
+      /*{
         if (input.isEmpty) {
           return 'Please Enter NIC Number';
         }
@@ -135,7 +136,6 @@ class _addNewMemberState extends State<addNewMember> {
       onSaved: (input) => useFname = input,
     );
 
-
     final facultyField = TextFormField(
       /* validator: (input) {
         if (input.isEmpty) {
@@ -154,14 +154,14 @@ class _addNewMemberState extends State<addNewMember> {
 
     final yearField = TextFormField(
       validator: (input) {
-        if(input.isNotEmpty){
+        if (input.isNotEmpty) {
           if (!(input.startsWith('1') ||
-            input.startsWith('2') ||
-            input.startsWith('3') ||
-            input.startsWith('4') ||
-            input.startsWith('5'))) {
-          return 'Year is not valid';
-        }
+              input.startsWith('2') ||
+              input.startsWith('3') ||
+              input.startsWith('4') ||
+              input.startsWith('5'))) {
+            return 'Year is not valid';
+          }
         }
         /* if (input.isEmpty) {
           return 'Please Enter The Year';

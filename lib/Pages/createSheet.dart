@@ -6,9 +6,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:teamapp/Services/ListPage.dart';
 
 class CreateSheet extends StatefulWidget {
-  static String get strDate => strDate;
+  //static String get strDate => strDate;
 
-  static get uploadData => CreateSheet.uploadData;
+
+
+ // static get uploadData => CreateSheet.uploadData;
 
   @override
   _CreateSheetState createState() => _CreateSheetState();
@@ -20,7 +22,6 @@ class _CreateSheetState extends State<CreateSheet> {
   DateTime _date = DateTime.now();
   String strDate;
   String search;
-
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -73,15 +74,20 @@ class _CreateSheetState extends State<CreateSheet> {
       //onChanged: (),
     );
 
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Sheet'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Done',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0,color: Colors.white)),
-            onPressed: (){
-              CreateSheet.uploadData();
-              print('Done');
+            child: Text('Done',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: Colors.white)),
+            onPressed: () {
+              //ListPage.uploadData();
+              //print('Done');
 
               //print(ListPage.presentList);
             },
@@ -89,6 +95,8 @@ class _CreateSheetState extends State<CreateSheet> {
         ],
       ),
       body: Center(
+          child: Padding(
+        padding: const EdgeInsets.only(bottom: 30.0),
         child: Column(
           children: <Widget>[
             Padding(
@@ -124,11 +132,14 @@ class _CreateSheetState extends State<CreateSheet> {
               ),
             ),
             Flexible(
-                child: ListPage(),
+              child: ListPage(),
             ),
           ],
         ),
-      ),
+      )),
     );
+  }
+  String getDate(){
+    return strDate;
   }
 }

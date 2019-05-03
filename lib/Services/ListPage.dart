@@ -21,8 +21,8 @@ List<String> index = new List<String>();
 //var presentMembers = {'Date':CreateSheet.strDate};
 
 class _ListPageState extends State<ListPage> {
- // crudMethods crudObj = new crudMethods();
-  void _onCategorySelected(bool selected, name,indexno) {
+  // crudMethods crudObj = new crudMethods();
+  void _onCategorySelected(bool selected, name, indexno) {
     if (selected == true) {
       setState(() {
         //presentMembers.add(category_id);
@@ -46,28 +46,51 @@ class _ListPageState extends State<ListPage> {
 
   Future getPosts() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection("teamapp").getDocuments();
+    QuerySnapshot qn = await firestore.collection('teamapp').getDocuments();
     print("*");
     return qn.documents;
   }
 
-  Future uploadData() async{
+  Future uploadData() async {
     Map<String, List<String>> attendanceSheet = {
-       'Names' : names,
-       'Index' : index,
+      'Names': names,
+      'Index': index,
     };
 
     //Firestore.instance.collection('teamapp').add(memberDetails).catchError((e){
-        //print(e);
-    Firestore.instance.collection(CreateSheet.strDate).add(attendanceSheet).catchError((e){
+    //print(e);
+    //String today = CreateSheet.strDate;
+    //print(today);
+    Firestore.instance.collection('today').document('12thmay').setData(attendanceSheet).catchError((e){
       print(e);
     });
+    /*Firestore.instance
+        .collection('today')
+        .add(attendanceSheet)
+        .catchError((e) {
+      print(e);
+    });*/
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
+    final submitButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: FloatingActionButton(
+        elevation: 5.0,
+        onPressed: () {
+          uploadData();
+          /* final FormState = _formKey.currentState;
+
+          if (FormState.validate()) {
+            uploadData();
+          }*/
+        },
+        child: Icon(Icons.check),
+      ),
+    );
     return Container(
       child: FutureBuilder(
         future: getPosts(),
@@ -79,29 +102,45 @@ class _ListPageState extends State<ListPage> {
           } else {
             // final nameList = snapshot.data["Name"];
             //print(nameList);
-            return ListView.builder(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: snapshot.data.length,
-                itemBuilder: (_, index) {
-                  return Center(
-                    child: CheckboxListTile(
-                        value: names
-                            .contains(snapshot.data[index].data["Name"]),
-                        title: Text(snapshot.data[index].data["Name"]),
-                        onChanged: (bool selected) {
-                          //markMember(snapshot.data[index].data["Name"]);
-                          _onCategorySelected(
-                              selected, snapshot.data[index].data["Name"],snapshot.data[index].data["IndexNo"]);
-                        }),
-                  );
-                  /* return ListTile(
-                    title: Expanded(
-                      child: Text(snapshot.data[index].data["Name"]),
+            return Column(
+              children: <Widget>[
+                ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (_, index) {
+                      return Center(
+                        child: CheckboxListTile(
+                            value: names
+                                .contains(snapshot.data[index].data["Name"]),
+                            title: Text(snapshot.data[index].data["Name"]),
+                            onChanged: (bool selected) {
+                              //markMember(snapshot.data[index].data["Name"]);
+                              _onCategorySelected(
+                                  selected,
+                                  snapshot.data[index].data["Name"],
+                                  snapshot.data[index].data["IndexNo"]);
+                            }),
+                      );
+                    }),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 120,
                     ),
-                  );*/
-                });
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 290,
+                        ),
+                        submitButton,
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            );
           }
         },
       ),
