@@ -11,7 +11,11 @@ class ListPage extends StatefulWidget {
   _ListPageState createState() => _ListPageState();
 }
 
-var presentMembers = Map();
+//var presentMembers = Map();
+Map<String, List<String>> attendanceSheet = new Map<String, List<String>>();
+List<String> names = new List<String>();
+List<String> index = new List<String>();
+
 //presentMembers['Date'] = CreateSheet.strDate;
 
 //var presentMembers = {'Date':CreateSheet.strDate};
@@ -21,16 +25,22 @@ class _ListPageState extends State<ListPage> {
     if (selected == true) {
       setState(() {
         //presentMembers.add(category_id);
-        presentMembers['Name'] = name;
-        presentMembers['indexno'] = indexno;
+        names.add(name);
+        index.add(indexno);
+        //attendanceSheet.addAll("",names);
+        //presentMembers['Name'] = name;
+        //presentMembers['indexno'] = indexno;
       });
     } else {
       setState(() {
-        presentMembers.remove(name);
-        presentMembers.remove(indexno);
+        names.remove(name);
+        index.remove(indexno);
+        //presentMembers.remove(name);
+        //presentMembers.remove(indexno);
       });
     }
-    print(presentMembers);
+    print(names);
+    print(index);
   }
 
   Future getPosts() async {
@@ -61,8 +71,8 @@ class _ListPageState extends State<ListPage> {
                 itemBuilder: (_, index) {
                   return Center(
                     child: CheckboxListTile(
-                        value: presentMembers
-                            .containsValue(snapshot.data[index].data["Name"]),
+                        value: names
+                            .contains(snapshot.data[index].data["Name"]),
                         title: Text(snapshot.data[index].data["Name"]),
                         onChanged: (bool selected) {
                           //markMember(snapshot.data[index].data["Name"]);
