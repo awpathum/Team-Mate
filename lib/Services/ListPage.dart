@@ -11,9 +11,21 @@ class ListPage extends StatefulWidget {
 }
 
 var presentMembers = new List();
-bool marked = false;
 
 class _ListPageState extends State<ListPage> {
+  void _onCategorySelected(bool selected, category_id) {
+    if (selected == true) {
+      setState(() {
+        presentMembers.add(category_id);
+      });
+    } else {
+      setState(() {
+        presentMembers.remove(category_id);
+      });
+    }
+    print(presentMembers);
+  }
+
   Future getPosts() async {
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection("teamapp").getDocuments();
@@ -42,11 +54,13 @@ class _ListPageState extends State<ListPage> {
                 itemBuilder: (_, index) {
                   return Center(
                     child: CheckboxListTile(
-                        value: timeDilation != 1.0,
+                        value: presentMembers
+                            .contains(snapshot.data[index].data["Name"]),
                         title: Text(snapshot.data[index].data["Name"]),
-                        onChanged: (bool value) {
-                          markMember(snapshot.data[index].data["Name"]);
-                           setState(() { timeDilation = value ? 2.0 : 1.0; });
+                        onChanged: (bool selected) {
+                          //markMember(snapshot.data[index].data["Name"]);
+                          _onCategorySelected(
+                              selected, snapshot.data[index].data["Name"]);
                         }),
                   );
                   /* return ListTile(
@@ -59,16 +73,5 @@ class _ListPageState extends State<ListPage> {
         },
       ),
     );
-  }
-
-  markMember(String name) {
-    if (marked == true) {
-      presentMembers.add(name);
-      print(presentMembers);
-    }
-    else{
-      presentMembers.remove(name);
-      print(presentMembers);
-    }
   }
 }
