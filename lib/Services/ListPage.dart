@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
-
 import 'package:flutter/scheduler.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Services/crud.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class ListPage extends StatefulWidget {
 }
 
 //var presentMembers = Map();
-Map<String, List<String>> attendanceSheet = new Map<String, List<String>>();
+//Map<List<String>, List<String>> attendanceSheet = new Map<List<String>, List<String>>();
 List<String> names = new List<String>();
 List<String> index = new List<String>();
 
@@ -21,6 +21,7 @@ List<String> index = new List<String>();
 //var presentMembers = {'Date':CreateSheet.strDate};
 
 class _ListPageState extends State<ListPage> {
+ // crudMethods crudObj = new crudMethods();
   void _onCategorySelected(bool selected, name,indexno) {
     if (selected == true) {
       setState(() {
@@ -49,6 +50,21 @@ class _ListPageState extends State<ListPage> {
     print("*");
     return qn.documents;
   }
+
+  Future uploadData() async{
+    Map<String, List<String>> attendanceSheet = {
+       'Names' : names,
+       'Index' : index,
+    };
+
+    //Firestore.instance.collection('teamapp').add(memberDetails).catchError((e){
+        //print(e);
+    Firestore.instance.collection(CreateSheet.strDate).add(attendanceSheet).catchError((e){
+      print(e);
+    });
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {

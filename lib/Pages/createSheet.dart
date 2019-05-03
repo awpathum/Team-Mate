@@ -8,6 +8,8 @@ import 'package:teamapp/Services/ListPage.dart';
 class CreateSheet extends StatefulWidget {
   static String get strDate => strDate;
 
+  static get uploadData => CreateSheet.uploadData;
+
   @override
   _CreateSheetState createState() => _CreateSheetState();
 }
@@ -78,6 +80,9 @@ class _CreateSheetState extends State<CreateSheet> {
           FlatButton(
             child: Text('Done',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0,color: Colors.white)),
             onPressed: (){
+              CreateSheet.uploadData();
+              print('Done');
+
               //print(ListPage.presentList);
             },
           )
