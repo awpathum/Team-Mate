@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:teamapp/Services/ListPage.dart';
 
 class CreateSheet extends StatefulWidget {
+  static String get strDate => strDate;
+
   @override
   _CreateSheetState createState() => _CreateSheetState();
 }

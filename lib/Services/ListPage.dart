@@ -4,23 +4,30 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
 
 import 'package:flutter/scheduler.dart';
+import 'package:teamapp/Pages/createSheet.dart';
 
 class ListPage extends StatefulWidget {
   @override
   _ListPageState createState() => _ListPageState();
 }
 
-var presentMembers = new List();
+var presentMembers = Map();
+//presentMembers['Date'] = CreateSheet.strDate;
+
+//var presentMembers = {'Date':CreateSheet.strDate};
 
 class _ListPageState extends State<ListPage> {
-  void _onCategorySelected(bool selected, category_id) {
+  void _onCategorySelected(bool selected, name,indexno) {
     if (selected == true) {
       setState(() {
-        presentMembers.add(category_id);
+        //presentMembers.add(category_id);
+        presentMembers['Name'] = name;
+        presentMembers['indexno'] = indexno;
       });
     } else {
       setState(() {
-        presentMembers.remove(category_id);
+        presentMembers.remove(name);
+        presentMembers.remove(indexno);
       });
     }
     print(presentMembers);
@@ -55,12 +62,12 @@ class _ListPageState extends State<ListPage> {
                   return Center(
                     child: CheckboxListTile(
                         value: presentMembers
-                            .contains(snapshot.data[index].data["Name"]),
+                            .containsValue(snapshot.data[index].data["Name"]),
                         title: Text(snapshot.data[index].data["Name"]),
                         onChanged: (bool selected) {
                           //markMember(snapshot.data[index].data["Name"]);
                           _onCategorySelected(
-                              selected, snapshot.data[index].data["Name"]);
+                              selected, snapshot.data[index].data["Name"],snapshot.data[index].data["IndexNo"]);
                         }),
                   );
                   /* return ListTile(
