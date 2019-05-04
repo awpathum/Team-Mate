@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:teamapp/Pages/createSheet.dart';
 class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,26 +21,8 @@ class Search extends StatelessWidget {
 }
 
 class DataSearch extends SearchDelegate<String> {
-  final cities = [
-    "Anuradhapura",
-    "Colombo",
-    "Maharagama",
-    "Kuruegala",
-    "Boralesgamuwa",
-    "Bellanvila",
-    "Nugegoda",
-    "Delkanda",
-    "Navinna",
-    "Thibirigasyaya",
-    "Kirilapone",
-    "Kollupitiya",
-    "Bambalapitiya",
-    "Battaramulla",
-    "Thalangama",
-    "Kotte",
-    "Koswatta"
-  ];
-  final recentCities = ["Boralesgamuwa", "Bellanvila", "Nugegoda", "Delkanda"];
+
+  //final recentCities = ["Boralesgamuwa", "Bellanvila", "Nugegoda", "Delkanda"];
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -76,7 +58,7 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // show when somone searches something
-    final suggetionList = query.isEmpty ? recentCities : cities.where((p) => p.startsWith(query)).toList();
+    final suggetionList = query.isEmpty ? recentnames : names.where((p) => p.startsWith(query)).toList();
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
             leading: Icon(Icons.location_city),

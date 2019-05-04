@@ -9,13 +9,17 @@ class CreateSheet extends StatefulWidget {
 
 List<String> names = new List<String>();
 List<String> index = new List<String>();
+//List<String> recentnames = new List<String>();
+final recentnames = ["aaa", "bbb", "ccc", "ddd"];
 
 class CreateSheetState extends State<CreateSheet> {
+  final _formKey = GlobalKey<FormState>();
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
   DateTime _date = DateTime.now();
   String strDate;
-  String search;
+  int count = 0;
+
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -39,7 +43,7 @@ class CreateSheetState extends State<CreateSheet> {
     final searchText = TextFormField(
       style: style,
       decoration: InputDecoration(hintText: "Enter First Name"),
-      onSaved: (input) => search = input,
+     // onSaved: (input) => search = input,
     );
     final pickedDate = Text(
       'Date Selected: ${strDate}',
@@ -56,7 +60,9 @@ class CreateSheetState extends State<CreateSheet> {
       iconSize: 25.0,
     );
     final searchButton = IconButton(
-      onPressed: () {},
+      onPressed: () {
+        //search(),
+      },
       tooltip: 'Hit',
       icon: Icon(Icons.search),
       iconSize: 25.0,
@@ -71,7 +77,7 @@ class CreateSheetState extends State<CreateSheet> {
         onPressed: () {
           uploadData();
         },
-        child: Icon(Icons.check),
+        child: Text(count.toString()),
       ),
     );
 
@@ -86,15 +92,14 @@ class CreateSheetState extends State<CreateSheet> {
                     fontSize: 15.0,
                     color: Colors.white)),
             onPressed: () {
-              uploadData();
-              
+              //uploadData();
             },
           )
         ],
       ),
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.only(bottom: 30.0),
+        padding: const EdgeInsets.only(bottom: 10.0),
         child: Column(
           children: <Widget>[
             Padding(
@@ -112,15 +117,18 @@ class CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
               child: Row(
                 children: <Widget>[
                   SizedBox(
                     width: 10.0,
                   ),
-                  Flexible(
-                    child: searchText,
+                  Form(
+                    key: _formKey,
+                    child: Flexible(
+                      child: searchText,
+                    ),
                   ),
                   SizedBox(
                     width: 10.0,
@@ -128,7 +136,7 @@ class CreateSheetState extends State<CreateSheet> {
                   searchButton,
                 ],
               ),
-            ),
+            ),*/
             Flexible(
               child: Container(
                 child: FutureBuilder(
@@ -151,7 +159,7 @@ class CreateSheetState extends State<CreateSheet> {
                                     value: names.contains(
                                         snapshot.data[index].data["Name"]),
                                     title:
-                                        Text(snapshot.data[index].data["Name"]),
+                                        Text(snapshot.data[index].data["Name"] + "                             " +snapshot.data[index].data["IndexNo"]),
                                     onChanged: (bool selected) {
                                       _onCategorySelected(
                                           selected,
@@ -166,6 +174,10 @@ class CreateSheetState extends State<CreateSheet> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 10.0,
+            ),
+            submitButton
           ],
         ),
       )),
@@ -190,10 +202,12 @@ class CreateSheetState extends State<CreateSheet> {
     }
     print(names);
     print(index);
+    count = names.length;
   }
 
   Future getPosts() async {
     var firestore = Firestore.instance;
+    //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
     QuerySnapshot qn = await firestore.collection('teamapp').getDocuments();
     print("*");
     return qn.documents;
