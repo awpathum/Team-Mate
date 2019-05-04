@@ -2,19 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class CreateSheet extends StatefulWidget {
-
-
-
   @override
   CreateSheetState createState() => CreateSheetState();
 }
+
 DateTime _date = DateTime.now();
-initState(){
-  
-  
-  String strDate  = _date.toString().substring(0,10);
+initState() {
+  String strDate = _date.toString().substring(0, 10);
   return strDate;
 }
 
@@ -28,14 +23,11 @@ class CreateSheetState extends State<CreateSheet> {
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
 
-  int count = 0;
+  static int count = 0;
   String today = initState();
 
-
   Future<Null> _selectDate(BuildContext context) async {
-    print('***');
     final DateTime picked = await showDatePicker(
-
       context: context,
       initialDate: _date,
       firstDate: DateTime(2000),
@@ -43,10 +35,9 @@ class CreateSheetState extends State<CreateSheet> {
     );
 
     if (picked != null && picked != _date) {
-      
       setState(() {
         _date = picked;
-        
+
         today = _date.toString().substring(0, 10);
         print('Date Selected: ${today}');
       });
@@ -55,7 +46,7 @@ class CreateSheetState extends State<CreateSheet> {
 
   @override
   Widget build(BuildContext context) {
-   /* final searchText = TextFormField(
+    /* final searchText = TextFormField(
       style: style,
       decoration: InputDecoration(hintText: "Enter First Name"),
      // onSaved: (input) => search = input,
@@ -74,7 +65,7 @@ class CreateSheetState extends State<CreateSheet> {
       icon: Icon(Icons.calendar_today),
       iconSize: 25.0,
     );
-   /* final searchButton = IconButton(
+    /* final searchButton = IconButton(
       onPressed: () {
         //search(),
       },
@@ -99,7 +90,6 @@ class CreateSheetState extends State<CreateSheet> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Sheet'),
-
       ),
       body: Center(
           child: Padding(
@@ -121,7 +111,6 @@ class CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-      
             Flexible(
               child: Container(
                 child: FutureBuilder(
@@ -143,8 +132,10 @@ class CreateSheetState extends State<CreateSheet> {
                                 child: CheckboxListTile(
                                     value: names.contains(
                                         snapshot.data[index].data["Name"]),
-                                    title:
-                                        Text(snapshot.data[index].data["Name"] + "                             " +snapshot.data[index].data["IndexNo"]),
+                                    title: Text(snapshot
+                                            .data[index].data["Name"] +
+                                        "                             " +
+                                        snapshot.data[index].data["IndexNo"]),
                                     onChanged: (bool selected) {
                                       _onCategorySelected(
                                           selected,
