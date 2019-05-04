@@ -2,27 +2,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+
 class CreateSheet extends StatefulWidget {
+
+
+
   @override
   CreateSheetState createState() => CreateSheetState();
+}
+DateTime _date = DateTime.now();
+initState(){
+  
+  
+  String strDate  = _date.toString().substring(0,10);
+  return strDate;
 }
 
 List<String> names = new List<String>();
 List<String> index = new List<String>();
-//List<String> recentnames = new List<String>();
+
 final recentnames = ["aaa", "bbb", "ccc", "ddd"];
 
 class CreateSheetState extends State<CreateSheet> {
   final _formKey = GlobalKey<FormState>();
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
-  DateTime _date = DateTime.now();
-  String strDate;
+
   int count = 0;
+  String today = initState();
 
 
   Future<Null> _selectDate(BuildContext context) async {
+    print('***');
     final DateTime picked = await showDatePicker(
+
       context: context,
       initialDate: _date,
       firstDate: DateTime(2000),
@@ -30,23 +43,25 @@ class CreateSheetState extends State<CreateSheet> {
     );
 
     if (picked != null && picked != _date) {
+      
       setState(() {
         _date = picked;
-        strDate = _date.toString().substring(0, 10);
-        print('Date Selected: ${strDate}');
+        
+        today = _date.toString().substring(0, 10);
+        print('Date Selected: ${today}');
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final searchText = TextFormField(
+   /* final searchText = TextFormField(
       style: style,
       decoration: InputDecoration(hintText: "Enter First Name"),
      // onSaved: (input) => search = input,
-    );
+    );*/
     final pickedDate = Text(
-      'Date Selected: ${strDate}',
+      'Date Selected: ${today}',
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       style: style,
@@ -59,14 +74,14 @@ class CreateSheetState extends State<CreateSheet> {
       icon: Icon(Icons.calendar_today),
       iconSize: 25.0,
     );
-    final searchButton = IconButton(
+   /* final searchButton = IconButton(
       onPressed: () {
         //search(),
       },
       tooltip: 'Hit',
       icon: Icon(Icons.search),
       iconSize: 25.0,
-    );
+    );*/
 
     final submitButton = Material(
       elevation: 5.0,
@@ -84,18 +99,7 @@ class CreateSheetState extends State<CreateSheet> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Sheet'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Done',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.white)),
-            onPressed: () {
-              //uploadData();
-            },
-          )
-        ],
+
       ),
       body: Center(
           child: Padding(
@@ -117,26 +121,7 @@ class CreateSheetState extends State<CreateSheet> {
                 ],
               ),
             ),
-            /*Padding(
-              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Flexible(
-                      child: searchText,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  searchButton,
-                ],
-              ),
-            ),*/
+      
             Flexible(
               child: Container(
                 child: FutureBuilder(
@@ -185,7 +170,7 @@ class CreateSheetState extends State<CreateSheet> {
   }
 
   String getDate() {
-    return strDate;
+    return initState();
   }
 
   void _onCategorySelected(bool selected, name, indexno) {
@@ -221,10 +206,10 @@ class CreateSheetState extends State<CreateSheet> {
 
     Firestore.instance
         .collection('RecodeBook')
-        .document(strDate)
+        .document(today)
         .setData(attendanceSheet)
         .then((result) {
-      print(strDate);
+      print(today);
       Fluttertoast.showToast(
           msg: "Done",
           toastLength: Toast.LENGTH_SHORT,
