@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Pages/viewSheet.dart';
 import 'package:teamapp/Services/search.dart';
 
 class Home extends StatefulWidget {
@@ -34,7 +35,8 @@ class _HomeState extends State<Home> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ViewSheet())),
         child: Text("View Sheet",
             textAlign: TextAlign.center,
             style: style.copyWith(

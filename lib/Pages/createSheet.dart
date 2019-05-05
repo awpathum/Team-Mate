@@ -91,9 +91,10 @@ class CreateSheetState extends State<CreateSheet> {
       appBar: AppBar(
         title: Text('Create Sheet'),
       ),
+      floatingActionButton: submitButton,
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
+        padding: const EdgeInsets.only(bottom: 80.0),
         child: Column(
           children: <Widget>[
             Padding(
@@ -117,9 +118,10 @@ class CreateSheetState extends State<CreateSheet> {
                   future: getPosts(),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      /*return Center(
                         child: Text("Loading"),
-                      );
+                      );*/
+                      return CircularProgressIndicator();
                     } else {
                       return Center(
                         child: ListView.builder(
@@ -150,10 +152,10 @@ class CreateSheetState extends State<CreateSheet> {
                 ),
               ),
             ),
-            SizedBox(
+            /*SizedBox(
               height: 10.0,
-            ),
-            submitButton
+            ),*/
+            //submitButton
           ],
         ),
       )),
@@ -184,7 +186,7 @@ class CreateSheetState extends State<CreateSheet> {
   Future getPosts() async {
     var firestore = Firestore.instance;
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
-    QuerySnapshot qn = await firestore.collection('teamapp').getDocuments();
+    QuerySnapshot qn = await firestore.collection('teamapp').orderBy("Name").getDocuments();
     print("*");
     return qn.documents;
   }
