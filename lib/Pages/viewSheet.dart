@@ -13,6 +13,7 @@ initState() {
 }
 
 class _ViewSheetState extends State<ViewSheet> {
+  int count = 0; //for item count
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
   String today = initState();
@@ -58,7 +59,6 @@ class _ViewSheetState extends State<ViewSheet> {
           padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
           child: Column(
             children: <Widget>[
-              //Text('Hello',style: style,),
               Row(
                 children: <Widget>[
                   SizedBox(
@@ -75,30 +75,26 @@ class _ViewSheetState extends State<ViewSheet> {
                 child: Container(
                   child: FutureBuilder(
                     future: getList(),
-                    builder: (contetx, AsyncSnapshot<List<dynamic>> snapshot) {
+                    builder: (contetx, AsyncSnapshot<Map<dynamic,List<dynamic>>> snapshot) {
                      /* if(snapshot.hasData){
-                        return Text(snapshot.data.toString());
-                      }else if(snapshot.hasError){
-                        return Text('${snapshot.error}');
-                      }
-                      return CircularProgressIndicator();*/
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text('${snapshot.data.length}');
+                      }else if(snapshot.hasData){
+                        print('Error');
+                      }*/
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
-                    } /*else{
-                      return Text('${snapshot.data.length}');
-                      }*/ else {
+                      } else {
                         return Center(
                           child: ListView.builder(
                               padding: const EdgeInsets.only(bottom: 20.0),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              itemCount: snapshot.data.length,
+                              itemCount: count,//((snapshot.data.values.join("").length)/2).toInt(),
                               itemBuilder: (context, index) {
+                                var data;
                                 return Center(
-                                  child: //Text('hello'),
-                                  ListTile(
-                                    title: Text(
-                                       snapshot.data[index]), //snapshot data should dispaly in this text field
+                                  child: ListTile(
+                                    title: Text(snapshot.data["fname"][index] + "                       " + snapshot.data["mindex"][index]), //snapshot data should dispaly in this text field
                                   ),
                                 );
                               }),
@@ -113,19 +109,40 @@ class _ViewSheetState extends State<ViewSheet> {
         ));
   }
 
-  Future<List<dynamic>> getList() async {
-  var firestore = Firestore.instance;
+  
+ /*  Future<Map<dynamic,dynamic>> getList() async {
+var firestore = Firestore.instance;
+Map<dynamic,dynamic> info = Map<dynamic,dynamic>();
+DocumentReference docRef =
+    firestore.collection('RecodeBook').document('2019-05-04');
+//List<dynamic> info = new List<String>();
+docRef.get().then((datasnapshot) {
+  if (datasnapshot.exists) {
+    info = datasnapshot.data['Names'].toList();
+    print('#');
+    print(info); //this line prints [aa, aghshs, fffg, fug, ghh, fggg, ghhh]
+    print(info.length); //this line prints 7
+  }
+});
+return info;
+   }*/
+Future<Map<dynamic,List<dynamic>>> getList() async {
+    var firestore = Firestore.instance;
+    Map<dynamic,List<dynamic>> info = Map<dynamic,List<dynamic>>();
+    DocumentReference docRef =
+        firestore.collection('RecodeBook').document(today);
 
-  DocumentReference docRef = firestore.collection('RecodeBook').document(today);
-
-  return docRef.get().then((datasnapshot) {
-    if (datasnapshot.exists) {
-      List<dynamic> info = datasnapshot.data['Names'].toList();
-      print('#');
-      print(info); //this line prints [aa, aghshs, fffg, fug, ghh, fggg, ghhh]
-      print(info.length); //this line prints 7
-      return info;
-    }
-  });
-}
+    return docRef.get().then((datasnapshot) {
+      if (datasnapshot.exists) {
+        List<dynamic> name = datasnapshot.data['Names'].toList();
+        List<dynamic> indexno = datasnapshot.data["Index"].toList();
+        info = {"fname":name,"mindex":indexno};
+        print('#');
+        print(info);
+        print(info.length);
+        count = name.length;
+        return info;
+      }
+    });
+  }
 }
