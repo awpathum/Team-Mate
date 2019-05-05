@@ -52,7 +52,7 @@ class CreateSheetState extends State<CreateSheet> {
      // onSaved: (input) => search = input,
     );*/
     final pickedDate = Text(
-      'Date Selected: ${today}',
+      '${today}',
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       style: style,
@@ -102,7 +102,7 @@ class CreateSheetState extends State<CreateSheet> {
               child: Row(
                 children: <Widget>[
                   SizedBox(
-                    width: 10.0,
+                    width: 80.0,
                   ),
                   pickedDate,
                   SizedBox(

@@ -16,6 +16,8 @@ class _ViewSheetState extends State<ViewSheet> {
   int count = 0; //for item count
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
+      TextStyle diastyle = TextStyle(
+      fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.red[200]);
   String today = initState();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -38,7 +40,7 @@ class _ViewSheetState extends State<ViewSheet> {
   @override
   Widget build(BuildContext context) {
     final pickedDate = Text(
-      'Date Selected: ${today}',
+      '${today}',
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       style: style,
@@ -62,8 +64,9 @@ class _ViewSheetState extends State<ViewSheet> {
               Row(
                 children: <Widget>[
                   SizedBox(
-                    width: 10.0,
+                    width: 80.0,
                   ),
+                  
                   pickedDate,
                   SizedBox(
                     width: 45.0,
@@ -81,9 +84,20 @@ class _ViewSheetState extends State<ViewSheet> {
                       }else if(snapshot.hasData){
                         print('Error');
                       }*/
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (!snapshot.hasData) {
+                        return Container(
+
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 200.0,),
+                              Text(today + ' had no practices', style:diastyle),
+                            ],
+                          )
+                        );
+                        
+                      } else if(snapshot.connectionState == ConnectionState.waiting){
                         return CircularProgressIndicator();
-                      } else {
+                      }else{
                         return Center(
                           child: ListView.builder(
                               padding: const EdgeInsets.only(bottom: 20.0),
@@ -91,7 +105,7 @@ class _ViewSheetState extends State<ViewSheet> {
                               shrinkWrap: true,
                               itemCount: count,//((snapshot.data.values.join("").length)/2).toInt(),
                               itemBuilder: (context, index) {
-                                var data;
+                                
                                 return Center(
                                   child: ListTile(
                                     title: Text(snapshot.data["fname"][index] + "                       " + snapshot.data["mindex"][index]), //snapshot data should dispaly in this text field
@@ -108,24 +122,6 @@ class _ViewSheetState extends State<ViewSheet> {
           ),
         ));
   }
-
-  
- /*  Future<Map<dynamic,dynamic>> getList() async {
-var firestore = Firestore.instance;
-Map<dynamic,dynamic> info = Map<dynamic,dynamic>();
-DocumentReference docRef =
-    firestore.collection('RecodeBook').document('2019-05-04');
-//List<dynamic> info = new List<String>();
-docRef.get().then((datasnapshot) {
-  if (datasnapshot.exists) {
-    info = datasnapshot.data['Names'].toList();
-    print('#');
-    print(info); //this line prints [aa, aghshs, fffg, fug, ghh, fggg, ghhh]
-    print(info.length); //this line prints 7
-  }
-});
-return info;
-   }*/
 Future<Map<dynamic,List<dynamic>>> getList() async {
     var firestore = Firestore.instance;
     Map<dynamic,List<dynamic>> info = Map<dynamic,List<dynamic>>();
