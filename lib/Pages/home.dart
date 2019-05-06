@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
+import 'package:teamapp/Pages/check.dart';
 import 'package:teamapp/Pages/createSheet.dart';
 import 'package:teamapp/Pages/viewSheet.dart';
 import 'package:teamapp/Services/search.dart';
+import 'package:teamapp/Pages/checkAttendance.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -66,7 +68,7 @@ class _HomeState extends State<Home> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Search())),
+            context, MaterialPageRoute(builder: (context) => check())),
         child: Text("Check Attendance",
             textAlign: TextAlign.center,
             style: style.copyWith(

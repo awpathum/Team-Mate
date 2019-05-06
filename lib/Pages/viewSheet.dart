@@ -16,7 +16,7 @@ class _ViewSheetState extends State<ViewSheet> {
   int count = 0; //for item count
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
-      TextStyle diastyle = TextStyle(
+  TextStyle diastyle = TextStyle(
       fontFamily: 'Montserrat', fontSize: 18.0, color: Colors.red[200]);
   String today = initState();
   Future<Null> _selectDate(BuildContext context) async {
@@ -66,7 +66,6 @@ class _ViewSheetState extends State<ViewSheet> {
                   SizedBox(
                     width: 80.0,
                   ),
-                  
                   pickedDate,
                   SizedBox(
                     width: 45.0,
@@ -78,37 +77,41 @@ class _ViewSheetState extends State<ViewSheet> {
                 child: Container(
                   child: FutureBuilder(
                     future: getList(),
-                    builder: (contetx, AsyncSnapshot<Map<dynamic,List<dynamic>>> snapshot) {
-                     /* if(snapshot.hasData){
+                    builder: (contetx,
+                        AsyncSnapshot<Map<dynamic, List<dynamic>>> snapshot) {
+                      /* if(snapshot.hasData){
                         return Text('${snapshot.data.length}');
                       }else if(snapshot.hasData){
                         print('Error');
                       }*/
                       if (!snapshot.hasData) {
                         return Container(
-
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(height: 200.0,),
-                              Text(today + ' had no practices', style:diastyle),
-                            ],
-                          )
-                        );
-                        
-                      } else if(snapshot.connectionState == ConnectionState.waiting){
+                            child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 200.0,
+                            ),
+                            Text(today + ' had no practices', style: diastyle),
+                          ],
+                        ));
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return CircularProgressIndicator();
-                      }else{
+                      } else {
                         return Center(
                           child: ListView.builder(
                               padding: const EdgeInsets.only(bottom: 20.0),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              itemCount: count,//((snapshot.data.values.join("").length)/2).toInt(),
+                              itemCount:
+                                  count, //((snapshot.data.values.join("").length)/2).toInt(),
                               itemBuilder: (context, index) {
-                                
                                 return Center(
                                   child: ListTile(
-                                    title: Text(snapshot.data["fname"][index] + "                       " + snapshot.data["mindex"][index]), //snapshot data should dispaly in this text field
+                                    title: Text(snapshot.data["fname"][index] +
+                                        "                       " +
+                                        snapshot.data["mindex"][
+                                            index]), //snapshot data should dispaly in this text field
                                   ),
                                 );
                               }),
@@ -122,9 +125,10 @@ class _ViewSheetState extends State<ViewSheet> {
           ),
         ));
   }
-Future<Map<dynamic,List<dynamic>>> getList() async {
+
+  Future<Map<dynamic, List<dynamic>>> getList() async {
     var firestore = Firestore.instance;
-    Map<dynamic,List<dynamic>> info = Map<dynamic,List<dynamic>>();
+    Map<dynamic, List<dynamic>> info = Map<dynamic, List<dynamic>>();
     DocumentReference docRef =
         firestore.collection('RecodeBook').document(today);
 
@@ -132,7 +136,7 @@ Future<Map<dynamic,List<dynamic>>> getList() async {
       if (datasnapshot.exists) {
         List<dynamic> name = datasnapshot.data['Names'].toList();
         List<dynamic> indexno = datasnapshot.data["Index"].toList();
-        info = {"fname":name,"mindex":indexno};
+        info = {"fname": name, "mindex": indexno};
         print('#');
         print(info);
         print(info.length);

@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:teamapp/Pages/collectionid.dart';
 import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard/keyboard.dart';
 import 'package:teamapp/CustomClass/memberData.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class addNewMember extends StatefulWidget {
   @override
@@ -317,7 +319,7 @@ class _addNewMemberState extends State<addNewMember> {
 
   Future uploadData() async {
     _formKey.currentState.save();
-    Map<String, dynamic> memeberDetails = {
+    Map<String, dynamic> memberDetails = {
       'IndexNo': this.useIndex,
       'NIC': this.useNIC,
       'Name': this.useName,
@@ -328,9 +330,28 @@ class _addNewMemberState extends State<addNewMember> {
       'Profilepic': this.useimage,
     };
     uploadImage();
-    crudObj.addData(memeberDetails).then((result) {
+    Firestore.instance.collection('Members').document(this.useIndex).setData(memberDetails).then((result){
+      _formKey.currentState.reset();
+
+       Fluttertoast.showToast(
+          msg: "Done",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }).catchError((e){
+      print(e);
+    });
+    
+    /*crudObj.addData(memeberDetails).then((result) {
       _formKey.currentState.reset();
       //add image to firesorage
+
+      //memId.add(this.useIndex);
+
+      
 
       Fluttertoast.showToast(
           msg: "Done",
@@ -342,6 +363,6 @@ class _addNewMemberState extends State<addNewMember> {
           fontSize: 16.0);
     }).catchError((e) {
       print(e);
-    });
+    });*/
   }
 }

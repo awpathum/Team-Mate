@@ -186,7 +186,7 @@ class CreateSheetState extends State<CreateSheet> {
   Future getPosts() async {
     var firestore = Firestore.instance;
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
-    QuerySnapshot qn = await firestore.collection('teamapp').orderBy("Name").getDocuments();
+    QuerySnapshot qn = await firestore.collection('Members').orderBy("Name").getDocuments();
     print("*");
     return qn.documents;
   }
