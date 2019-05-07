@@ -3,6 +3,7 @@ import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/check.dart';
 import 'package:teamapp/Pages/createSheet.dart';
 import 'package:teamapp/Pages/signIn.dart';
+import 'package:teamapp/Pages/viewProfile.dart';
 import 'package:teamapp/Pages/viewSheet.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
@@ -163,7 +164,7 @@ class _HomeState extends State<Home> {
         //minWidth: MediaQuery.of(context).size.width / 2,
         //height: MediaQuery.of(context).size.width / 4,
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => addNewMember())),
+            context, MaterialPageRoute(builder: (context) => Profile())),
       ),
     );
     final notifi = Material(

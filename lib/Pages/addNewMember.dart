@@ -306,19 +306,42 @@ class _addNewMemberState extends State<addNewMember> {
     });
   }
 
-  Future uploadImage() async {
+  /*Future<String> uploadImage() async {
     final StorageReference ref =
         FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
     final StorageUploadTask task = ref.putFile(image);
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
+    var dwnurl = await (await task.onComplete).ref.getDownloadURL();
+uploadData.url = dwnurl;
     setState(() {
       print('uploaded');
       image = null;
+      
     });
-  }
+    
+  }*/
+
+  /*Future<String> uploadImage(var imageFile ) async {
+    StorageReference ref = storage.ref().child("/photo.jpg");
+    StorageUploadTask uploadTask = ref.putFile(imageFile);
+
+    var dowurl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    url = dowurl.toString();
+
+    return url; 
+  }*/
 
   Future uploadData() async {
+    // var url;
     _formKey.currentState.save();
+    final StorageReference ref =
+        FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
+    final StorageUploadTask task = ref.putFile(image);
+    StorageTaskSnapshot taskSnapshot = await task.onComplete;
+    var dwnurl = await (await task.onComplete).ref.getDownloadURL();
+//url = dwnurl;
+   
+    print(dwnurl);
     Map<String, dynamic> memberDetails = {
       'IndexNo': this.useIndex,
       'NIC': this.useNIC,
@@ -327,13 +350,17 @@ class _addNewMemberState extends State<addNewMember> {
       'Faculty': useFaculty,
       'Year': this.useYear,
       'Telephone': this.useTelephone,
-      'Profilepic': this.useimage,
+      'Profilepic': dwnurl,
     };
-    uploadImage();
-    Firestore.instance.collection('Members').document(this.useIndex).setData(memberDetails).then((result){
+
+    Firestore.instance
+        .collection('Members')
+        .document(this.useIndex)
+        .setData(memberDetails)
+        .then((result) {
       _formKey.currentState.reset();
 
-       Fluttertoast.showToast(
+      Fluttertoast.showToast(
           msg: "Done",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
@@ -341,10 +368,15 @@ class _addNewMemberState extends State<addNewMember> {
           backgroundColor: Colors.black54,
           textColor: Colors.white,
           fontSize: 16.0);
-    }).catchError((e){
+    }).catchError((e) {
       print(e);
     });
-    
+
+     setState(() {
+      print('uploaded');
+      image = null;
+    });
+
     /*crudObj.addData(memeberDetails).then((result) {
       _formKey.currentState.reset();
       //add image to firesorage
