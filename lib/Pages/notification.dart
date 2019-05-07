@@ -6,12 +6,12 @@ import 'package:teamapp/Pages/signIn.dart';
 import 'package:teamapp/Pages/viewSheet.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
-class Home extends StatefulWidget {
+class notification extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _notificationState createState() => _notificationState();
 }
 
-class _HomeState extends State<Home> {
+class _notificationState extends State<notification> {
   TextStyle style =
       TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/home.dart';
 import 'package:teamapp/Pages/signIn.dart';
 
 
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: Home(),
     );
   }
 }

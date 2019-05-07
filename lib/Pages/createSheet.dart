@@ -77,7 +77,7 @@ class CreateSheetState extends State<CreateSheet> {
     final submitButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: Color(0xff564154),
       child: FloatingActionButton(
         elevation: 5.0,
         onPressed: () {
@@ -89,6 +89,7 @@ class CreateSheetState extends State<CreateSheet> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff564154),
         title: Text('Create Sheet'),
       ),
       floatingActionButton: submitButton,
