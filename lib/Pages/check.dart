@@ -4,23 +4,27 @@ import 'package:teamapp/Pages/collectionid.dart';
 
 class check extends StatefulWidget {
   @override
+
   _checkState createState() => _checkState();
 }
 
 List<dynamic> allId = List<dynamic>();
 List<String> keys = List<String>();
 List<int> vals = List<int>();
+int run = 0;
+
+/* initSate(){
+    getDetails();
+    print('Done');
+ }*/
 
 class _checkState extends State<check> {
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
   @override
-  initSate(){
-    getDetails();
-    print('Done');
-  }
-  
   Widget build(BuildContext context) {
+    //getDetails();
+    //countId();
     final ascending = Radio(
       value: 0,
       onChanged: setAsc(),
@@ -44,7 +48,7 @@ class _checkState extends State<check> {
           FlatButton(
             child: Text('Check'),
             onPressed: () {
-              countId();
+              //countId();
             },
           ),
         ],
@@ -76,9 +80,9 @@ class _checkState extends State<check> {
             Flexible(
               child: Container(
                 child: FutureBuilder(
-                  future: getList(),
-                  builder: (contetx, AsyncSnapshot<List<String>> snapshot) {
-                   /* if (snapshot.hasData) {
+                  future: getDetails(),
+                  builder: (contetx, snapshot) {
+                    /* if (snapshot.hasData) {
                       return Text('${snapshot.data.length}');
                     } else if (snapshot.hasData) {
                       print('Error');
@@ -91,7 +95,9 @@ class _checkState extends State<check> {
                           SizedBox(
                             height: 200.0,
                           ),
-                          Text(' had no practices',),
+                          Text(
+                            ' had no practices',
+                          ),
                         ],
                       ));
                     } else if (snapshot.connectionState ==
@@ -109,9 +115,12 @@ class _checkState extends State<check> {
                             itemBuilder: (context, index) {
                               return Center(
                                 child: ListTile(
-
-                                    title: Text(allId[index]+"    " + snapshot.data[index]), //snapshot data should dispaly in this text field
-                                    ),
+                                  title: Text(dayCount.keys.toList()[index] +
+                                      "     " +
+                                      dayCount.values
+                                          .toList()[index]
+                                          .toString()), //snapshot data should dispaly in this text field
+                                ),
                               );
                             }),
                       );
@@ -129,9 +138,50 @@ class _checkState extends State<check> {
   setAsc() {
     Firestore.instance.collection('Attendance').orderBy('201');
   }
+
   setDec() {}
 
+/*  Future<Map<String, int>> countId() async {
+    print('count id');
+    print(memId);
+    print('#');
+    int lenMem = memId.length; //members who came practice
+    int lenAll = allId.length; //all members
+    int c = 0;
+    print(lenMem);
+    print(lenAll);
+
+    if (run <= memId.length) {
+      for (int i = 0; i < lenAll; i++) {
+        print('outer for loop');
+        for (int j = 0; j < lenMem; j++) {
+          print('inner for loop');
+          if (allId[i] == memId[j]) {
+            print('if statement');
+            c++;
+          } else {
+            print('else statement');
+          }
+        }
+        dayCount[allId[i]] = c;
+        print(c);
+        c = 0;
+      }
+    }
+
+    print(dayCount);
+    // uploadData();
+    keys = dayCount.keys.toList();
+    vals = dayCount.values.toList();
+
+    setState(() {
+      //getList();
+    });
+    return (dayCount);
+  }*/
+
   Future getDetails() async {
+    print('get details');
     var firestore = Firestore.instance;
 
     QuerySnapshot memsnap =
@@ -156,7 +206,7 @@ class _checkState extends State<check> {
     print(pracDays);
     for (int i = 0; i < count; i++) {
       print('1st for loop');
-      List<String> newList = List<String>();
+     
       print(pracDays[i]);
 
       Firestore.instance
@@ -167,6 +217,7 @@ class _checkState extends State<check> {
         print(ds.exists);
         print(ds['Names']);
         newList = List.from(ds['Index']);
+        print(newList);
         memId.addAll(newList);
         print(memId);
       }).catchError((e) {
@@ -174,10 +225,7 @@ class _checkState extends State<check> {
       });
       print(allId.length);
     }
-    //countId();
-  }
-
-  countId() {
+       print('count id');
     print(memId);
     print('#');
     int lenMem = memId.length; //members who came practice
@@ -185,32 +233,38 @@ class _checkState extends State<check> {
     int c = 0;
     print(lenMem);
     print(lenAll);
-    for (int i = 0; i < lenAll; i++) {
-      print('outer for loop');
-      for (int j = 0; j < lenMem; j++) {
-        print('inner for loop');
-        if (allId[i] == memId[j]) {
-          print('if statement');
-          c++;
-        } else {
-          print('else statement');
+
+   
+      for (int i = 0; i < lenAll; i++) {
+        print('outer for loop');
+        for (int j = 0; j < lenMem; j++) {
+          print('inner for loop');
+          if (allId[i] == memId[j]) {
+            print('if statement');
+            c++;
+          } else {
+            print('else statement');
+          }
         }
+        dayCount[allId[i]] = c;
+        print(c);
+        c = 0;
       }
-      dayCount[allId[i]] = c;
-      print(c);
-      c = 0;
-    }
+    
+
     print(dayCount);
-    uploadData();
+    // uploadData();
     keys = dayCount.keys.toList();
     vals = dayCount.values.toList();
 
-    setState(() {
-      info = info;
-    });
+    /*setState(() {
+      //getList();
+    });*/
+    return (dayCount);
+    //countId();
   }
 
-  Future uploadData() async {
+  /* Future uploadData() async {
     Firestore.instance
         .collection('Attendance')
         .document('xyz')
@@ -220,7 +274,7 @@ class _checkState extends State<check> {
       print(e);
     });
 
-  }
+  }*/
 /*Future getPosts() async {
     var firestore = Firestore.instance;
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
@@ -229,12 +283,13 @@ class _checkState extends State<check> {
     return qn.documents;
 }*/
 
-    Future<List<String>> getList() async {
+  /* Future<List<String>> getList() async {
+      print('get list');
     var firestore = Firestore.instance;
    // Map<dynamic, List<dynamic>> info = Map<dynamic, List<dynamic>>();
    List<String> info = List<String>();
     DocumentReference docRef =
-        firestore.collection('Attendance').document('xyz');
+        await firestore.collection('Attendance').document('xyz');
 print('&');
     return docRef.get().then((datasnapshot) {
       if (datasnapshot.exists) {
@@ -249,9 +304,12 @@ print('&');
         print('#');
         print(info);
         print(info.length);
+        info.sort();
+        info = info.reversed.toList();
+
         //count = name.length;
         return info;
       }
     });
-  }
+    }*/
 }

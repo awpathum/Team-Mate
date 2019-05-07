@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/check.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Pages/signIn.dart';
 import 'package:teamapp/Pages/viewSheet.dart';
 import 'package:teamapp/Services/search.dart';
 import 'package:teamapp/Pages/checkAttendance.dart';
@@ -103,6 +104,11 @@ class _HomeState extends State<Home> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+    final logOut = IconButton(
+      icon: Icon(Icons.person_outline),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage())),
+    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -114,6 +120,14 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 290.0,
+                      ),
+                      logOut,
+                    ],
+                  ),
                   SizedBox(
                     height: 12.0,
                   ),
