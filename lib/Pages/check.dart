@@ -15,6 +15,11 @@ class _checkState extends State<check> {
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
   @override
+  initSate(){
+    getDetails();
+    print('Done');
+  }
+  
   Widget build(BuildContext context) {
     final ascending = Radio(
       value: 0,
@@ -199,6 +204,10 @@ class _checkState extends State<check> {
     uploadData();
     keys = dayCount.keys.toList();
     vals = dayCount.values.toList();
+
+    setState(() {
+      info = info;
+    });
   }
 
   Future uploadData() async {
@@ -210,6 +219,7 @@ class _checkState extends State<check> {
         .catchError((e) {
       print(e);
     });
+
   }
 /*Future getPosts() async {
     var firestore = Firestore.instance;
