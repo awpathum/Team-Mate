@@ -6,7 +6,11 @@ class check extends StatefulWidget {
   @override
   _checkState createState() => _checkState();
 }
+
 List<dynamic> allId = List<dynamic>();
+List<String> keys = List<String>();
+List<int> vals = List<int>();
+
 class _checkState extends State<check> {
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
@@ -64,66 +68,67 @@ class _checkState extends State<check> {
                 decTitle,
               ],
             ),
-            /*Flexible(
-                child: Container(
-                  child: FutureBuilder(
-                    future: getDetails(),
-                    builder: (contetx,
-                        AsyncSnapshot<Map<dynamic, List<dynamic>>> snapshot) {
-                      /* if(snapshot.hasData){
-                        return Text('${snapshot.data.length}');
-                      }else if(snapshot.hasData){
-                        print('Error');
-                      }*/
-                      if (!snapshot.hasData) {
-                        return Container(
-                            child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 200.0,
-                            ),
-                            //Text(today + ' had no practices', style: diastyle),
-                          ],
-                        ));
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else {
-                        return Center(
-                          child: ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                             // itemCount:
-                               //   count, //((snapshot.data.values.join("").length)/2).toInt(),
-                              itemBuilder: (context, index) {
-                                return Center(
-                                  child: ListTile(
-                                    title: Text(snapshot.data["fname"][index] +
-                                        "                       " +
-                                        snapshot.data["mindex"][
-                                            index]), //snapshot data should dispaly in this text field
-                                  ),
-                                );
-                              }),
-                        );
-                      }
-                    },
-                  ),
+            Flexible(
+              child: Container(
+                child: FutureBuilder(
+                  future: getList(),
+                  builder: (contetx, AsyncSnapshot<List<String>> snapshot) {
+                   /* if (snapshot.hasData) {
+                      return Text('${snapshot.data.length}');
+                    } else if (snapshot.hasData) {
+                      print('Error');
+                    }*/
+                    print('*');
+                    if (!snapshot.hasData) {
+                      return Container(
+                          child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 200.0,
+                          ),
+                          Text(' had no practices',),
+                        ],
+                      ));
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else {
+                      print('#');
+                      return Center(
+                        child: ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: allId
+                                .length, //((snapshot.data.values.join("").length)/2).toInt(),
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: ListTile(
+
+                                    title: Text(allId[index]+"    " + snapshot.data[index]), //snapshot data should dispaly in this text field
+                                    ),
+                              );
+                            }),
+                      );
+                    }
+                  },
                 ),
-              ),*/
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  setAsc() {}
+  setAsc() {
+    Firestore.instance.collection('Attendance').orderBy('201');
+  }
   setDec() {}
 
   Future getDetails() async {
     var firestore = Firestore.instance;
-    
+
     QuerySnapshot memsnap =
         await firestore.collection('RecodeBook').getDocuments();
     print('&');
@@ -164,9 +169,9 @@ class _checkState extends State<check> {
       });
       print(allId.length);
     }
-    
-
+    //countId();
   }
+
   countId() {
     print(memId);
     print('#');
@@ -191,7 +196,52 @@ class _checkState extends State<check> {
       c = 0;
     }
     print(dayCount);
-}
-}
+    uploadData();
+    keys = dayCount.keys.toList();
+    vals = dayCount.values.toList();
+  }
 
+  Future uploadData() async {
+    Firestore.instance
+        .collection('Attendance')
+        .document('xyz')
+        .setData(dayCount)
+        .then((result) {})
+        .catchError((e) {
+      print(e);
+    });
+  }
+/*Future getPosts() async {
+    var firestore = Firestore.instance;
+    //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
+    QuerySnapshot qn = await firestore.collection('Attendance').getDocuments();
+    
+    return qn.documents;
+}*/
 
+    Future<List<String>> getList() async {
+    var firestore = Firestore.instance;
+   // Map<dynamic, List<dynamic>> info = Map<dynamic, List<dynamic>>();
+   List<String> info = List<String>();
+    DocumentReference docRef =
+        firestore.collection('Attendance').document('xyz');
+print('&');
+    return docRef.get().then((datasnapshot) {
+      if (datasnapshot.exists) {
+        for(int i = 0;i < allId.length;i++){
+          String id = datasnapshot.data[allId[i]].toString();
+        print(id);
+        info.add(id);
+        }
+        
+       // String name = datasnapshot.data[""].toList();
+        
+        print('#');
+        print(info);
+        print(info.length);
+        //count = name.length;
+        return info;
+      }
+    });
+  }
+}
