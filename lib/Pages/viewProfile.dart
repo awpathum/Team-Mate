@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/home.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   final String id;
@@ -13,22 +15,37 @@ class _ProfileState extends State<Profile> {
   TextStyle style =
       TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
   final _formKey = GlobalKey<FormState>();
+  var tele;
 
   @override
   Widget build(BuildContext context) {
+    final div = Divider(
+      height: 10.0,
+      color: Colors.grey[300],
+    );
     return new Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('View Profile'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(EvaIcons.homeOutline),
+              iconSize: 35.0,
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              },
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(
-            EvaIcons.editOutline,
+            EvaIcons.phoneCallOutline,
             color: Colors.white,
             size: 30.0,
           ),
           onPressed: () {
-            //editDialog();
+            launchURL(tele);
           },
         ),
         body: new Stack(
@@ -38,10 +55,9 @@ class _ProfileState extends State<Profile> {
               builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
                 if (!snapshot.hasData) {
                   print('no data');
-                  return  Container(
+                  return Container(
                       child: Column(
                     children: <Widget>[
-                     
                       SizedBox(
                         height: 200.0,
                       ),
@@ -49,227 +65,175 @@ class _ProfileState extends State<Profile> {
                   ));
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(child:CircularProgressIndicator(),);
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else {
-                  return Positioned(
-                      width: 350.0,
-                      top: MediaQuery.of(context).size.height / 16,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                              width: 150.0,
-                              height: 150.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          snapshot.data["Profilepic"]),
-                                      fit: BoxFit.cover),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(75.0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 7.0, color: Colors.black)
-                                  ])),
-                          SizedBox(height: 20.0),
-                          Card(
-                             margin: const EdgeInsets.all(4.0),
-                              child: Material(
-                                borderRadius: BorderRadius.circular(0.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data['Name'],
-                                      style: style,
+                  tele = snapshot.data['Telephone'];
+                  return Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Container(
+                          width: 150.0,
+                          height: 150.0,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(snapshot.data["Profilepic"]),
+                                  fit: BoxFit.cover),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(75.0)),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 7.0, color: Colors.black)
+                              ])),
+                      SizedBox(height: 20.0),
+                      Center(
+                        child: Card(
+                          elevation: 2.0,
+                          margin: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data['Name'],
+                                          style: style,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        editDialog(
+                                            'Name', snapshot.data['IndexNo']);
+                                      },
                                     ),
-                                  ),
-                                  onTap: () {
-                                    editDialog(
-                                        'Name', snapshot.data['IndexNo']);
-                                  },
-                                ),
-                              )),
-                          SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(0.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                 /* onTap: () {
+                                  )),
+                              div,
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      /* onTap: () {
                                     editDialog(
                                         'IndexNo', snapshot.data['IndexNo']);
                                   },*/
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data["IndexNo"],
-                                      style: style,
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data["IndexNo"],
+                                          style: style,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
-                          SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(0.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    editDialog(
-                                        'NIC', snapshot.data['IndexNo']);
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data["NIC"],
-                                      style: style,
+                                  )),
+                              div,
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        editDialog(
+                                            'NIC', snapshot.data['IndexNo']);
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data["NIC"],
+                                          style: style,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
-                          SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(00.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    editDialog(
-                                        'Faculty', snapshot.data['IndexNo']);
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data["Faculty"],
-                                      style: style,
+                                  )),
+                              div,
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(00.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        editDialog('Faculty',
+                                            snapshot.data['IndexNo']);
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data["Faculty"],
+                                          style: style,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
-                          SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(0.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    editDialog(
-                                        'Year', snapshot.data['IndexNo']);
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data["Year"] + "  Year",
-                                      style: style,
+                                  )),
+                              div,
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        editDialog(
+                                            'Year', snapshot.data['IndexNo']);
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data["Year"] + "  Year",
+                                          style: style,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
-                          SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(0.0),
-                                shadowColor: Colors.white,
-                                color: Colors.white,
-                                elevation: 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    editDialog(
-                                        'Telephone', snapshot.data['IndexNo']);
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data["Telephone"],
-                                      style: style,
+                                  )),
+                              div,
+                              Container(
+                                  height: 45.0,
+                                  width: 200.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                    shadowColor: Colors.white,
+                                    color: Colors.white,
+                                    elevation: 0.0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        editDialog('Telephone',
+                                            snapshot.data['IndexNo']);
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data["Telephone"],
+                                          style: style,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
-                          SizedBox(height: 25.0),
-                          /* Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                              height: 30.0,
-                              width: 95.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.greenAccent,
-                                color: Colors.green,
-                                elevation: 7.0,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: Center(
-                                    child: Text(
-                                      'Edit Name',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Montserrat'),
-                                    ),
-                                  ),
-                                ),
-                              )),
-                          Container(
-                              height: 30.0,
-                              width: 95.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.blueAccent,
-                                color: Colors.red,
-                                elevation: 7.0,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: Center(
-                                    child: Text(
-                                      'Edit Photo',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Montserrat'),
-                                    ),
-                                  ),
-                                ),
-                              )),
-                          Container(
-                              height: 30.0,
-                              width: 95.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.redAccent,
-                                color: Colors.red,
-                                elevation: 7.0,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: Center(
-                                    child: Text(
-                                      'Log out',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Montserrat'),
-                                    ),
-                                  ),
-                                ),
-                              ))
-                        ],
-                      ),*/
-                        ],
-                      ));
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
+                    ],
+                  );
                 }
               },
             ),
@@ -324,27 +288,29 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  Future<void> warning() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            children: <Widget>[
+              Icon(EvaIcons.alertTriangleOutline),
+              Text(
+                'Index Number Cannot change',
+                style: style,
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 
- Future<void> warning() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: true, 
-    // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: Column(
-          children: <Widget>[
-            Icon(EvaIcons.alertTriangleOutline),
-            Text('Index Number Cannot change',style: style,)
-          ],
-        ),
-        
-      );
-    },
-  );
-}
   Future<void> editDialog(String field, String id) async {
-    String name,index,nic,faculty,year,telephone;
+    String name, index, nic, faculty, year, telephone;
     /*if(field == 'IndexNo'){
       return warning();
     }*/
@@ -405,6 +371,13 @@ class _ProfileState extends State<Profile> {
       print(e);
     });
   }
+
+   launchURL(var number) async {
+    var url = number;
+    if (await canLaunch(number)) {
+      await launch(number);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }
-
-
