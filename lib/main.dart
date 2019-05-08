@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/addNewMember.dart';
+import 'package:teamapp/Pages/check.dart';
+import 'package:teamapp/Pages/createSheet.dart';
 import 'package:teamapp/Pages/home.dart';
+import 'package:teamapp/Pages/selectProfile.dart';
 import 'package:teamapp/Pages/signIn.dart';
+import 'package:teamapp/Pages/viewSheet.dart';
 
 
 void main() => runApp(MyApp());
@@ -15,6 +20,13 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.teal[50],
       ),
       home: Home(),
+      /*routes: <String,WidgetBuilder>{
+        '/createSheet': (BuildContext context) => CreateSheet(),
+        '/viewSheet': (BuildContext context) => ViewSheet(),
+        '/newmember': (BuildContext context) => addNewMember(),
+        '/checkattendance': (BuildContext context) => check(),
+        '/selectprofile': (BuildContext context) => selectProfile(),
+      },*/
     );
   }
 }

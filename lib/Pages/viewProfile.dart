@@ -3,6 +3,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
+  final String id;
+  Profile({Key key, this.id}) : super(key: key);
   @override
   _ProfileState createState() => new _ProfileState();
 }
@@ -54,7 +56,7 @@ class _ProfileState extends State<Profile> {
               clipper: getClipper(),
             ),
             FutureBuilder(
-              future: getList(),
+             future: getList(widget.id),
               builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
                 if (!snapshot.hasData) {
                   print('no data');
@@ -85,7 +87,7 @@ class _ProfileState extends State<Profile> {
                                       image: NetworkImage(
                                           snapshot.data["Profilepic"]),
                                       fit: BoxFit.cover),
-                                  borderRadius:
+                                  borderRadius: 
                                       BorderRadius.all(Radius.circular(75.0)),
                                   boxShadow: [
                                     BoxShadow(
@@ -284,10 +286,11 @@ class _ProfileState extends State<Profile> {
         ));
   }
 
-  Future<Map<String, String>> getList() async {
+  Future<Map<String, String>> getList(var index) async {
+    print(widget.id);
     var firestore = Firestore.instance;
     Map<String, String> info = Map<String, String>();
-    DocumentReference docRef = firestore.collection('Members').document('2016');
+    DocumentReference docRef = firestore.collection('Members').document(index);
 
     return docRef.get().then((datasnapshot) {
       if (datasnapshot.exists) {
