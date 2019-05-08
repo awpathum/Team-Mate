@@ -16,6 +16,7 @@ class _selectProfileState extends State<selectProfile> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Select Profile'),
+          backgroundColor: Color(0xff88498f),
         ),
         body: Center(
           child: FutureBuilder(

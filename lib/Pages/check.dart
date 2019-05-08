@@ -38,6 +38,7 @@ class _checkState extends State<check> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Check Attendance'),
+        backgroundColor: Color(0xff779fa1),
         actions: <Widget>[
           FlatButton(
             child: Text('Done'),

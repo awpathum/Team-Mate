@@ -56,6 +56,7 @@ class _ViewSheetState extends State<ViewSheet> {
     return Scaffold(
         appBar: AppBar(
           title: Text('View Sheet'),
+          backgroundColor: Color(0xffff8164),
         ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),

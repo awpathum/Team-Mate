@@ -28,6 +28,7 @@ class CreateSheetState extends State<CreateSheet> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
+      
       context: context,
       initialDate: _date,
       firstDate: DateTime(2000),
@@ -78,7 +79,9 @@ class CreateSheetState extends State<CreateSheet> {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff564154),
+      
       child: FloatingActionButton(
+        backgroundColor: Color(0xff564154),
         elevation: 5.0,
         onPressed: () {
           uploadData();
@@ -88,6 +91,7 @@ class CreateSheetState extends State<CreateSheet> {
     );
 
     return Scaffold(
+      
       appBar: AppBar(
         backgroundColor: Color(0xff564154),
         title: Text('Create Sheet'),

@@ -27,6 +27,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('View Profile'),
+          backgroundColor: Color(0xff88498f),
           actions: <Widget>[
             IconButton(
               icon: Icon(EvaIcons.homeOutline),
@@ -39,6 +40,7 @@ class _ProfileState extends State<Profile> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+         backgroundColor: Color(0xff88498f),
           child: Icon(
             EvaIcons.phoneCallOutline,
             color: Colors.white,

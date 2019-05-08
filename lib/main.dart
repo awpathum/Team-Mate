@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        //primarySwatch: Colors.blue,
-        backgroundColor: Colors.teal[50],
+        primarySwatch: Colors.red,
       ),
+     
       home: Home(),
       /*routes: <String,WidgetBuilder>{
         '/createSheet': (BuildContext context) => CreateSheet(),

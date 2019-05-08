@@ -64,6 +64,7 @@ class _addNewMemberState extends State<addNewMember> {
   @override
   Widget build(BuildContext context) {
     final indexField = TextFormField(
+      
       validator: (input) {
         if (input.isEmpty) {
           return 'Please Enter Index Number';
@@ -71,10 +72,6 @@ class _addNewMemberState extends State<addNewMember> {
         if (input.substring(0, 2) != '20') {
           return 'Index number not valid';
         }
-
-        /*if (input.length != 9) {
-          return 'Index Number not valid';
-        }*/
       },
       obscureText: false,
       style: style,
@@ -82,7 +79,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Index Number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useIndex = input,
     );
 
@@ -103,7 +100,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "NIC Number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useNIC = input,
     );
 
@@ -119,7 +116,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Name With Initials",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useName = input,
     );
     final fnameField = TextFormField(
@@ -134,7 +131,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "First Name",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useFname = input,
     );
 
@@ -150,7 +147,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Faculty",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useFaculty = input,
     );
 
@@ -178,7 +175,7 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Year",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useYear = input,
     );
 
@@ -194,15 +191,17 @@ class _addNewMemberState extends State<addNewMember> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Telephone",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
       onSaved: (input) => useTelephone = input,
     );
 
     final submitButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      
+      color: Color(0xff8f826b),
       child: FloatingActionButton(
+        backgroundColor: Color(0xff8f826b),
         elevation: 5.0,
         onPressed: () {
           final FormState = _formKey.currentState;
@@ -236,6 +235,7 @@ class _addNewMemberState extends State<addNewMember> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add New Member'),
+        backgroundColor: Color(0xff8f826b),
       ),
       floatingActionButton: submitButton,
       body: SingleChildScrollView(
