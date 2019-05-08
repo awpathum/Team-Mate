@@ -33,31 +33,27 @@ class _ProfileState extends State<Profile> {
         ),
         body: new Stack(
           children: <Widget>[
-            ClipPath(
-              child: Container(color: Colors.black.withOpacity(0.8)),
-              clipper: getClipper(),
-            ),
             FutureBuilder(
               future: getList(widget.id),
               builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
                 if (!snapshot.hasData) {
                   print('no data');
-                  return Container(
+                  return  Container(
                       child: Column(
                     children: <Widget>[
+                     
                       SizedBox(
                         height: 200.0,
                       ),
-                      Text('Not a Member'),
                     ],
                   ));
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child:CircularProgressIndicator(),);
                 } else {
                   return Positioned(
                       width: 350.0,
-                      top: MediaQuery.of(context).size.height / 8,
+                      top: MediaQuery.of(context).size.height / 16,
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -76,9 +72,8 @@ class _ProfileState extends State<Profile> {
                                         blurRadius: 7.0, color: Colors.black)
                                   ])),
                           SizedBox(height: 20.0),
-                          Container(
-                              height: 30.0,
-                              width: 200.0,
+                          Card(
+                             margin: const EdgeInsets.all(4.0),
                               child: Material(
                                 borderRadius: BorderRadius.circular(0.0),
                                 shadowColor: Colors.white,
@@ -107,7 +102,10 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                 /* onTap: () {
+                                    editDialog(
+                                        'IndexNo', snapshot.data['IndexNo']);
+                                  },*/
                                   child: Center(
                                     child: Text(
                                       snapshot.data["IndexNo"],
@@ -126,7 +124,10 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    editDialog(
+                                        'NIC', snapshot.data['IndexNo']);
+                                  },
                                   child: Center(
                                     child: Text(
                                       snapshot.data["NIC"],
@@ -145,7 +146,10 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    editDialog(
+                                        'Faculty', snapshot.data['IndexNo']);
+                                  },
                                   child: Center(
                                     child: Text(
                                       snapshot.data["Faculty"],
@@ -164,7 +168,10 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    editDialog(
+                                        'Year', snapshot.data['IndexNo']);
+                                  },
                                   child: Center(
                                     child: Text(
                                       snapshot.data["Year"] + "  Year",
@@ -183,7 +190,10 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    editDialog(
+                                        'Telephone', snapshot.data['IndexNo']);
+                                  },
                                   child: Center(
                                     child: Text(
                                       snapshot.data["Telephone"],
@@ -314,8 +324,30 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+
+ Future<void> warning() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true, 
+    // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Column(
+          children: <Widget>[
+            Icon(EvaIcons.alertTriangleOutline),
+            Text('Index Number Cannot change',style: style,)
+          ],
+        ),
+        
+      );
+    },
+  );
+}
   Future<void> editDialog(String field, String id) async {
-    String name;
+    String name,index,nic,faculty,year,telephone;
+    /*if(field == 'IndexNo'){
+      return warning();
+    }*/
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -375,20 +407,4 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class getClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = new Path();
 
-    path.lineTo(0.0, size.height / 1.9);
-    path.lineTo(size.width + 125, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
-    return true;
-  }
-}
