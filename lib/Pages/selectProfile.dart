@@ -14,48 +14,84 @@ class _selectProfileState extends State<selectProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Select Profile'),
-      ),
-      body: FutureBuilder(
-          future: getPosts(),
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else {
-              return Center(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) {
-                    return Center(
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.only(left: 50.0),
-                        leading: const Icon(EvaIcons.person),
-                        title: Text(
-                          snapshot.data[index].data['Name'],
-                          style: style,
-                        ),
-                        onTap: () {
-                          /*var route = MaterialPageRoute(
-                            builder: (BuildContext context) => Profile(
-                                id : snapshot.data[index].data['IndexNo']),
-                          );*/
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Profile(id : snapshot.data[index].data['IndexNo'])));
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            }
-          }),
-    );
+        appBar: AppBar(
+          title: Text('Select Profile'),
+        ),
+        body: Center(
+          child: FutureBuilder(
+              future: getPosts(),
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else {
+                  return Center(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, index) {
+                        print(snapshot.data[index].data['Profilepic']);
+                        if (snapshot.data[index].data['Profilepic'] != null) {
+                          return Center(
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.only(left: 50.0),
+                              leading: Container(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      image: DecorationImage(
+                                          image: NetworkImage(snapshot
+                                              .data[index].data['Profilepic']),
+                                          fit: BoxFit.cover),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(75.0)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 7.0,
+                                            color: Colors.black)
+                                      ])),
+                              title: Text(
+                                snapshot.data[index].data['Name'],
+                                style: style,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile(
+                                            id: snapshot
+                                                .data[index].data['IndexNo'])));
+                              },
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.only(left: 50.0),
+                              leading: Icon(EvaIcons.person),
+                              title: Text(
+                                snapshot.data[index].data['Name'],
+                                style: style,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile(
+                                            id: snapshot
+                                                .data[index].data['IndexNo'])));
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                }
+              }),
+        ));
   }
 
   Future getPosts() async {
@@ -63,7 +99,7 @@ class _selectProfileState extends State<selectProfile> {
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
     QuerySnapshot qn =
         await firestore.collection('Members').orderBy("Name").getDocuments();
-    print("*");
+
     return qn.documents;
   }
 }

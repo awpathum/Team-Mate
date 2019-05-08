@@ -237,6 +237,7 @@ class _addNewMemberState extends State<addNewMember> {
       appBar: AppBar(
         title: Text('Add New Member'),
       ),
+      floatingActionButton: submitButton,
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -286,7 +287,7 @@ class _addNewMemberState extends State<addNewMember> {
                           SizedBox(
                             width: 68.0,
                           ),
-                          submitButton,
+                         // submitButton,
                         ],
                       )
                     ],

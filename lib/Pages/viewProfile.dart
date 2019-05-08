@@ -12,28 +12,10 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   TextStyle style =
       TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
-      final _formKey = GlobalKey<FormState>();
-      String name,filed;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    final name = Container(
-        height: 30.0,
-        width: 95.0,
-        child: Material(
-          borderRadius: BorderRadius.circular(20.0),
-          shadowColor: Colors.greenAccent,
-          color: Colors.green,
-          elevation: 7.0,
-          child: GestureDetector(
-            onTap: () {},
-            child: Center(
-              child: Text(
-                'Edit Name',
-                style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
-              ),
-            ),
-          ),
-        ));
     return new Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -56,7 +38,7 @@ class _ProfileState extends State<Profile> {
               clipper: getClipper(),
             ),
             FutureBuilder(
-             future: getList(widget.id),
+              future: getList(widget.id),
               builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
                 if (!snapshot.hasData) {
                   print('no data');
@@ -87,7 +69,7 @@ class _ProfileState extends State<Profile> {
                                       image: NetworkImage(
                                           snapshot.data["Profilepic"]),
                                       fit: BoxFit.cover),
-                                  borderRadius: 
+                                  borderRadius:
                                       BorderRadius.all(Radius.circular(75.0)),
                                   boxShadow: [
                                     BoxShadow(
@@ -103,16 +85,15 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                                 elevation: 0.0,
                                 child: GestureDetector(
-                                 
                                   child: Center(
                                     child: Text(
                                       snapshot.data['Name'],
                                       style: style,
-                                      
                                     ),
                                   ),
-                                   onTap: () {
-                                    //editDialog(snapshot.data);
+                                  onTap: () {
+                                    editDialog(
+                                        'Name', snapshot.data['IndexNo']);
                                   },
                                 ),
                               )),
@@ -333,10 +314,11 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  Future<void> editDialog(String field,String id) async {
+  Future<void> editDialog(String field, String id) async {
+    String name;
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Edit'),
@@ -346,24 +328,26 @@ class _ProfileState extends State<Profile> {
                 Form(
                   key: _formKey,
                   child: TextFormField(
-                  obscureText: true,
-                  onSaved: (input) => name = input,
-                  decoration: InputDecoration(
-                    //border: ,
-                    labelText: 'Enter Text Here',
+                    obscureText: false,
+                    onSaved: (input) => name = input,
+                    decoration: InputDecoration(
+                      //border: ,
+                      labelText: 'Enter Text Here',
+                    ),
                   ),
                 ),
-                ),
-                
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Regret'),
+              child: Text('OK'),
               onPressed: () {
-                updateDetails();
-                Navigator.of(context).pop();
+                _formKey.currentState.save();
+                if (name.isNotEmpty) {
+                  updateDetails(id, field, name);
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],
@@ -372,10 +356,22 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  updateDetails()async{
+  updateDetails(String doc, String field, String data) async {
+    print('****');
+    print(data);
+
     _formKey.currentState.save();
-    Map<String,String> submit = {};
-   // Firestore.instance.collection('Members').document('2016').updateData('Name':name);
+    Map<String, String> submit = {field: data};
+
+    Firestore.instance
+        .collection('Members')
+        .document(doc)
+        .updateData(submit)
+        .then((result) {
+      print('Done');
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
 
