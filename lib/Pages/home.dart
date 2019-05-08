@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/check.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Pages/selectProfile.dart';
 import 'package:teamapp/Pages/signIn.dart';
 import 'package:teamapp/Pages/viewProfile.dart';
 import 'package:teamapp/Pages/viewSheet.dart';
