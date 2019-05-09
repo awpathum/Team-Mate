@@ -196,6 +196,8 @@ class _checkState extends State<check> {
     var list2 = querySnapshot2.documents;
     list2.forEach((f) {
       allId.add(f.documentID);
+      allId = allId.toSet().toList();
+      print(allId);
     });
     print(allId);
     QuerySnapshot querySnapshot =
@@ -226,8 +228,10 @@ class _checkState extends State<check> {
       });
       print(allId.length);
     }
-
-    countID();
+    if (run == 0) {
+      countID();
+      run = 1;
+    }
   }
 
   countID() {
