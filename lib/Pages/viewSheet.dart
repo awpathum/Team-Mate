@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/home.dart';
 
 class ViewSheet extends StatefulWidget {
   @override
@@ -35,7 +37,12 @@ class _ViewSheetState extends State<ViewSheet> {
         print('Date Selected:{$today}');
       });
     }
-  }
+  } final div = Divider(
+      height: 15.0,
+      color: Colors.grey[400],
+      
+    );
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +62,16 @@ class _ViewSheetState extends State<ViewSheet> {
     );
     return Scaffold(
         appBar: AppBar(
-          title: Text('View Sheet'),
+          leading: IconButton(
+          icon: Icon(
+            EvaIcons.arrowBackOutline,
+          ),
+          color: Colors.white,
+        onPressed: (){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+        },),
+          title: Text('View Sheet',style: TextStyle(color: Colors.white),),
           backgroundColor: Color(0xffff8164),
         ),
         body: Padding(
@@ -108,12 +124,25 @@ class _ViewSheetState extends State<ViewSheet> {
                                   count, //((snapshot.data.values.join("").length)/2).toInt(),
                               itemBuilder: (context, index) {
                                 return Center(
-                                  child: ListTile(
-                                    title: Text(snapshot.data["fname"][index] +
-                                        "                       " +
-                                        snapshot.data["mindex"][
-                                            index]), //snapshot data should dispaly in this text field
+                                  
+                                  child: Column(
+                                    children: <Widget>[
+                                      ListTile(
+                                    title: Text(snapshot.data["fname"][index]),
+                                    subtitle: Center(
+                                      child: Row(
+                                        children: <Widget>[
+                                          SizedBox(width: 220.0),
+                                          Text(snapshot.data["mindex"][index]),
+                                        ],
+                                      )
+                                          
+                                    ), //snapshot data should dispaly in this text field
                                   ),
+                                  div,
+                                    ],
+                                  ) 
+                                  
                                 );
                               }),
                         );

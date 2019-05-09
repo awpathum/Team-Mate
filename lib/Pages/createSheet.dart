@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:teamapp/Pages/home.dart';
 
 class CreateSheet extends StatefulWidget {
   @override
@@ -28,7 +30,6 @@ class CreateSheetState extends State<CreateSheet> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-      
       context: context,
       initialDate: _date,
       firstDate: DateTime(2000),
@@ -79,22 +80,33 @@ class CreateSheetState extends State<CreateSheet> {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff564154),
-      
       child: FloatingActionButton(
         backgroundColor: Color(0xff564154),
         elevation: 5.0,
         onPressed: () {
           uploadData();
         },
-        child: Text(count.toString()),
+        child: Text(count.toString(), style: TextStyle(color: Colors.white)),
       ),
+    );
+    final div = Divider(
+      height: 15.0,
+      color: Colors.grey[400],
     );
 
     return Scaffold(
-      
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            EvaIcons.arrowBackOutline,
+          ),
+          color: Colors.white,
+        onPressed: (){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+        },),
         backgroundColor: Color(0xff564154),
-        title: Text('Create Sheet'),
+        title: Text('Create Sheet', style: TextStyle(color: Colors.white)),
       ),
       floatingActionButton: submitButton,
       body: Center(
@@ -135,20 +147,30 @@ class CreateSheetState extends State<CreateSheet> {
                             shrinkWrap: true,
                             itemCount: snapshot.data.length,
                             itemBuilder: (_, index) {
-                              return Center(
-                                child: CheckboxListTile(
-                                    value: names.contains(
-                                        snapshot.data[index].data["Name"]),
-                                    title: Text(snapshot
-                                            .data[index].data["Name"] +
-                                        "                             " +
-                                        snapshot.data[index].data["IndexNo"]),
-                                    onChanged: (bool selected) {
-                                      _onCategorySelected(
-                                          selected,
-                                          snapshot.data[index].data["Name"],
-                                          snapshot.data[index].data["IndexNo"]);
-                                    }),
+                              return Column(
+                                children: <Widget>[
+                                  CheckboxListTile(
+                                      value: names.contains(
+                                          snapshot.data[index].data["Name"]),
+                                      title: Text(
+                                          snapshot.data[index].data["Name"]),
+                                      subtitle: Center(
+                                          child: Row(
+                                        children: <Widget>[
+                                          SizedBox(width: 190.0),
+                                          Text(snapshot
+                                              .data[index].data["IndexNo"]),
+                                        ],
+                                      )),
+                                      onChanged: (bool selected) {
+                                        _onCategorySelected(
+                                            selected,
+                                            snapshot.data[index].data["Name"],
+                                            snapshot
+                                                .data[index].data["IndexNo"]);
+                                      }),
+                                  div,
+                                ],
                               );
                             }),
                       );
@@ -191,7 +213,8 @@ class CreateSheetState extends State<CreateSheet> {
   Future getPosts() async {
     var firestore = Firestore.instance;
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
-    QuerySnapshot qn = await firestore.collection('Members').orderBy("Name").getDocuments();
+    QuerySnapshot qn =
+        await firestore.collection('Members').orderBy("Name").getDocuments();
     print("*");
     return qn.documents;
   }

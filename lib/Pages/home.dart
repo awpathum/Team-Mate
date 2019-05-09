@@ -195,8 +195,8 @@ class _HomeState extends State<Home> {
         ),
         //minWidth: MediaQuery.of(context).size.width / 2,
         //height: MediaQuery.of(context).size.width / 4,
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => notePad())),
+       // onPressed: () => Navigator.push(
+         //   context, MaterialPageRoute(builder: (context) => NotesList())),
       ),
     );
     /*final viewSheet = MaterialButton(
@@ -208,8 +208,8 @@ class _HomeState extends State<Home> {
        );*/
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Home'),
+        backgroundColor: Colors.black87,
+        title: Text('Home',style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.white,
       body: CustomScrollView(

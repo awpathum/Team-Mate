@@ -1,63 +1,76 @@
-//import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 
-class notePad extends StatefulWidget {
+class NotesList extends StatefulWidget {
+
   @override
-  _notePadState createState() => _notePadState();
+  State<StatefulWidget> createState() {
+    return new NotesListState();
+  }
 }
 
-TextStyle style =
-    TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
+class NotesListState extends State<NotesList> {
 
-class _notePadState extends State<notePad> {
+  final DbManager manager = new DbManager();
+  List<Note> notes;
+
+  @override
+  void dispose() {
+    super.dispose();
+    manager.closeDb();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String useFname;
-    final fnameField = TextFormField(
-      validator: (input) {
-        if (input.isEmpty) {
-          return 'Please Enter First Name';
-        }
+    return new FutureBuilder<List<Note>>(
+      future: manager.getNotes(),
+      builder: (context, snapshot) {
+        return new Scaffold(
+          appBar: new AppBar(
+            title: new Text("Notepad"),
+          ),
+          body: buildNotesList(snapshot),
+          floatingActionButton: new FloatingActionButton(
+              onPressed: () =>
+                  Navigator.of(context)
+                      .push(new MaterialPageRoute(builder: (_) => new NoteDetailsWidget(manager))),
+              child: new Icon(Icons.add)),
+        );
       },
-      obscureText: false,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "First Name",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
-      onSaved: (input) => useFname = input,
     );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Notepad'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
-      ),
-      body: Column(
-        children: <Widget>[
-          
-          Container(
-              height: 200.0,
-              width: 300.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(0.0),
-                shadowColor: Colors.white,
-                color: Colors.white,
-                elevation: 0.0,
-                child: GestureDetector(
-                  child: Center(
-                    child: TextFormField(
-                      
-                      style: style,
-                    ),
-                  ),
-                  onTap: () {},
-                ),
-              )),
-        ],
+  }
+
+  Widget buildNotesList(AsyncSnapshot<List<Note>> snapshot) {
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+        return new CircularProgressIndicator();
+      default:
+        if (snapshot.hasError) {
+          return new Text("Unexected error occurs: ${snapshot.error}");
+        }
+        notes = snapshot.data;
+        return new ListView.builder(
+            itemBuilder: (BuildContext context, int index) => _createItem(index),
+            itemCount: notes.length);
+    }
+  }
+
+  Widget _createItem(int index) {
+    return new Dismissible(
+      key: new UniqueKey(),
+      onDismissed: (direction) {
+        manager.deleteNote(notes[index].id)
+        .then((dynamic) => print("Deleted!"));
+      },
+      child: new ListTile(
+        title: new Text(notes[index].title),
+        subtitle: new Text(notes[index].descritpion.length > 50
+            ? notes[index].descritpion.substring(0, 50)
+            : notes[index].descritpion),
+        onTap: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (_) => new NoteDetailsWidget(manager, note: notes[index])));
+        },
       ),
     );
   }

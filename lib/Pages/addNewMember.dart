@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:teamapp/Pages/collectionid.dart';
+import 'package:teamapp/Pages/home.dart';
 import 'dart:async';
 import 'package:teamapp/Services/crud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -210,7 +212,7 @@ class _addNewMemberState extends State<addNewMember> {
             uploadData();
           }
         },
-        child: Icon(Icons.check),
+        child: Icon(Icons.check,color:Colors.white,),
       ),
     );
 
@@ -234,7 +236,17 @@ class _addNewMemberState extends State<addNewMember> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Member'),
+        leading: IconButton(
+          icon: Icon(
+            EvaIcons.arrowBackOutline,
+          ),
+          color: Colors.white,
+        onPressed: (){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+        },),
+        
+        title: Text('Add New Member',style: TextStyle(color: Colors.white),),
         backgroundColor: Color(0xff8f826b),
       ),
       floatingActionButton: submitButton,

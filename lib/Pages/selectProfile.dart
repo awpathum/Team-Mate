@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/home.dart';
 import 'package:teamapp/Pages/viewProfile.dart';
 
 class selectProfile extends StatefulWidget {
@@ -15,7 +16,16 @@ class _selectProfileState extends State<selectProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Select Profile'),
+          leading: IconButton(
+          icon: Icon(
+            EvaIcons.arrowBackOutline,
+          ),
+          color: Colors.white,
+        onPressed: (){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+        },),
+          title: Text('Select Profile',style: TextStyle(color: Colors.white),),
           backgroundColor: Color(0xff88498f),
         ),
         body: Center(
