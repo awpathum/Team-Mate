@@ -172,7 +172,7 @@ class _checkState extends State<check> {
     dayCount.clear();
     allId.clear();
     memId.clear();
-
+    pracDays.clear();
     print(dayCount);
     var firestore = Firestore.instance;
 
