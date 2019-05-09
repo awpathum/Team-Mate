@@ -36,22 +36,8 @@ class _checkState extends State<check> {
     final decTitle = Text('Decending', style: style);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Check Attendance'),
+        title: Text('Recode Book'),
         backgroundColor: Color(0xff779fa1),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Done'),
-            onPressed: () {
-              getDetails();
-            },
-          ),
-          FlatButton(
-            child: Text('Check'),
-            onPressed: () {
-              //countId();
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
@@ -186,7 +172,7 @@ class _checkState extends State<check> {
     dayCount.clear();
     allId.clear();
     memId.clear();
-    
+
     print(dayCount);
     var firestore = Firestore.instance;
 
@@ -201,7 +187,7 @@ class _checkState extends State<check> {
     var list2 = querySnapshot2.documents;
     list2.forEach((f) {
       allId.add(f.documentID);
-      allId = allId.toSet().toList();
+      // allId = allId.toSet().toList();
       print(allId);
     });
     print(allId);
@@ -227,11 +213,12 @@ class _checkState extends State<check> {
         newList = List.from(ds['Index']);
         print(newList);
         memId.addAll(newList);
-        print(memId);
+        newList.clear();
+        print(allId);
       }).catchError((e) {
         print(e);
       });
-      print(allId.length);
+      //print(allId.length);
     }
 
     countID();
@@ -259,6 +246,8 @@ class _checkState extends State<check> {
         }
       }
       dayCount[allId[i]] = c;
+      print(allId);
+      print(memId);
       print('C is ');
       print(c);
       c = 0;
@@ -268,7 +257,7 @@ class _checkState extends State<check> {
     // uploadData();
     keys = dayCount.keys.toList();
     vals = dayCount.values.toList();
-    
+
     /*setState(() {
       //getList();
     });*/
