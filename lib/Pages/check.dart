@@ -4,7 +4,6 @@ import 'package:teamapp/Pages/collectionid.dart';
 
 class check extends StatefulWidget {
   @override
-
   _checkState createState() => _checkState();
 }
 
@@ -82,14 +81,14 @@ class _checkState extends State<check> {
               child: Container(
                 child: FutureBuilder(
                   future: getDetails(),
-                  builder: (contetx, snapshot) {
+                  builder: (contetx, AsyncSnapshot<Map<String, int>> snapshot) {
                     /* if (snapshot.hasData) {
                       return Text('${snapshot.data.length}');
                     } else if (snapshot.hasData) {
                       print('Error');
                     }*/
-                    print('*');
-                    if (!snapshot.hasData) {
+                    print('future builder');
+                    if (snapshot.hasData) {
                       return Container(
                           child: Column(
                         children: <Widget>[
@@ -114,6 +113,7 @@ class _checkState extends State<check> {
                             itemCount: allId
                                 .length, //((snapshot.data.values.join("").length)/2).toInt(),
                             itemBuilder: (context, index) {
+                              print(index);
                               return Center(
                                 child: ListTile(
                                   title: Text(dayCount.keys.toList()[index] +
@@ -181,7 +181,7 @@ class _checkState extends State<check> {
     return (dayCount);
   }*/
 
-  Future getDetails() async {
+  Future<Map<String, int>> getDetails() async {
     print('get details');
     var firestore = Firestore.instance;
 
@@ -207,10 +207,10 @@ class _checkState extends State<check> {
     print(pracDays);
     for (int i = 0; i < count; i++) {
       print('1st for loop');
-     
+
       print(pracDays[i]);
 
-      Firestore.instance
+      await Firestore.instance
           .collection('RecodeBook')
           .document(pracDays[i])
           .get()
@@ -226,32 +226,35 @@ class _checkState extends State<check> {
       });
       print(allId.length);
     }
-       print('count id');
+
+    countID();
+  }
+
+  countID() {
+    print('count id');
     print(memId);
-    print('#');
+    // print('#');
     int lenMem = memId.length; //members who came practice
     int lenAll = allId.length; //all members
     int c = 0;
     print(lenMem);
     print(lenAll);
 
-   
-      for (int i = 0; i < lenAll; i++) {
-        print('outer for loop');
-        for (int j = 0; j < lenMem; j++) {
-          print('inner for loop');
-          if (allId[i] == memId[j]) {
-            print('if statement');
-            c++;
-          } else {
-            print('else statement');
-          }
+    for (int i = 0; i < lenAll; i++) {
+      print('outer for loop');
+      for (int j = 0; j < lenMem; j++) {
+        print('inner for loop');
+        if (allId[i] == memId[j]) {
+          print('if statement');
+          c++;
+        } else {
+          print('else statement');
         }
-        dayCount[allId[i]] = c;
-        print(c);
-        c = 0;
       }
-    
+      dayCount[allId[i]] = c;
+      print(c);
+      c = 0;
+    }
 
     print(dayCount);
     // uploadData();
@@ -262,7 +265,6 @@ class _checkState extends State<check> {
       //getList();
     });*/
     return (dayCount);
-    //countId();
   }
 
   /* Future uploadData() async {

@@ -10,15 +10,17 @@ import 'package:teamapp/Pages/viewSheet.dart';
 
 void main() => runApp(MyApp());
 
+final ThemeData themeData = ThemeData(
+  brightness: Brightness.light,
+  primarySwatch: Colors.red,
+);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-     
+      theme: themeData,
       home: Home(),
       /*routes: <String,WidgetBuilder>{
         '/createSheet': (BuildContext context) => CreateSheet(),
