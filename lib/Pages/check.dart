@@ -183,6 +183,11 @@ class _checkState extends State<check> {
 
   Future<Map<String, int>> getDetails() async {
     print('get details');
+    dayCount.clear();
+    allId.clear();
+    memId.clear();
+    
+    print(dayCount);
     var firestore = Firestore.instance;
 
     QuerySnapshot memsnap =
@@ -228,10 +233,8 @@ class _checkState extends State<check> {
       });
       print(allId.length);
     }
-    if (run == 0) {
-      countID();
-      run = 1;
-    }
+
+    countID();
   }
 
   countID() {
@@ -256,6 +259,7 @@ class _checkState extends State<check> {
         }
       }
       dayCount[allId[i]] = c;
+      print('C is ');
       print(c);
       c = 0;
     }
@@ -264,7 +268,7 @@ class _checkState extends State<check> {
     // uploadData();
     keys = dayCount.keys.toList();
     vals = dayCount.values.toList();
-
+    
     /*setState(() {
       //getList();
     });*/
@@ -274,7 +278,7 @@ class _checkState extends State<check> {
   /* Future uploadData() async {
     Firestore.instance
         .collection('Attendance')
-        .document('xyz')
+        .document('xyz')R
         .setData(dayCount)
         .then((result) {})
         .catchError((e) {
