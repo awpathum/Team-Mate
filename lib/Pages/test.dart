@@ -1,61 +1,64 @@
+//import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
+class notePad extends StatefulWidget {
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _notePadState createState() => _notePadState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var _textController = new TextEditingController();
+TextStyle style =
+    TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
 
+class _notePadState extends State<notePad> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Home Page"),
+    String useFname;
+    final fnameField = TextFormField(
+      validator: (input) {
+        if (input.isEmpty) {
+          return 'Please Enter First Name';
+        }
+      },
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "First Name",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+      onSaved: (input) => useFname = input,
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notepad'),
       ),
-      body: new ListView(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.done),
+      ),
+      body: Column(
         children: <Widget>[
-          new ListTile(
-            title: new TextField(
-              controller: _textController,
-            ),
-          ),
-          new ListTile(
-            title: new RaisedButton(
-              child: new Text("Next"),
-              onPressed: () {
-                var route = new MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      new NextPage(value: _textController.text),
-                );
-                Navigator.of(context).push(route);
-              },
-            ),
-          ),
+          
+          Container(
+              height: 200.0,
+              width: 300.0,
+              child: Material(
+                borderRadius: BorderRadius.circular(0.0),
+                shadowColor: Colors.white,
+                color: Colors.white,
+                elevation: 0.0,
+                child: GestureDetector(
+                  child: Center(
+                    child: TextFormField(
+                      
+                      style: style,
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+              )),
         ],
       ),
-    );
-  }
-}
-
-class NextPage extends StatefulWidget {
-  final String value;
-
-  NextPage({Key key, this.value}) : super(key: key);
-
-  @override
-  _NextPageState createState() => new _NextPageState();
-}
-
-class _NextPageState extends State<NextPage> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Next Page"),
-      ),
-      body: new Text("${widget.value}"),
     );
   }
 }
