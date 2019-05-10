@@ -195,8 +195,8 @@ class _HomeState extends State<Home> {
         ),
         //minWidth: MediaQuery.of(context).size.width / 2,
         //height: MediaQuery.of(context).size.width / 4,
-       // onPressed: () => Navigator.push(
-         //   context, MaterialPageRoute(builder: (context) => NotesList())),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => notePad())),
       ),
     );
     /*final viewSheet = MaterialButton(

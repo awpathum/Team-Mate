@@ -27,11 +27,20 @@ class _ProfileState extends State<Profile> {
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('View Profile'),
+        leading: IconButton(
+          icon: Icon(
+            EvaIcons.arrowBackOutline,
+          ),
+          color: Colors.white,
+        onPressed: (){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+        },),
+        title: Text('View Profile',style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xff88498f),
         actions: <Widget>[
           IconButton(
-            icon: Icon(EvaIcons.homeOutline),
+            icon: Icon(EvaIcons.homeOutline,color: Colors.white,),
             iconSize: 35.0,
             onPressed: () {
               Navigator.push(
@@ -343,7 +352,7 @@ class _ProfileState extends State<Profile> {
           title: Text('Are You Sure?'),
           actions: <Widget>[
             FlatButton(
-              child: Text('Delete'),
+              child: Text('Delete',style: TextStyle(color: Colors.red)),
               onPressed: () {
                 removeMem(id);
                 Navigator.push(context,
@@ -351,7 +360,7 @@ class _ProfileState extends State<Profile> {
               },
             ),
             FlatButton(
-              child: Text('Cancel'),
+              child: Text('Cancel',style: TextStyle(color: Colors.green)),
               onPressed: () {
                 Navigator.pop(context);
               },

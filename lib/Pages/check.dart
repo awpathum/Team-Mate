@@ -34,9 +34,16 @@ class _checkState extends State<check> {
     );
     final ascTitle = Text('Ascending', style: style);
     final decTitle = Text('Decending', style: style);
+
+    final div = Divider(
+      height: 15.0,
+      color: Colors.grey[400],
+      
+    );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recode Book'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Recode Book',style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xff779fa1),
       ),
       body: Padding(
@@ -101,14 +108,36 @@ class _checkState extends State<check> {
                             itemBuilder: (context, index) {
                               print(index);
                               return Center(
-                                child: ListTile(
+                                child: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                    title: Text(dayCount.keys.toList()[index]),
+                                    subtitle: Center(
+                                      child: Row(
+                                        children: <Widget>[
+                                          SizedBox(width: 270.0),
+                                          
+                                          Text(dayCount.values.toList()[index].toString()),
+                                          
+                                        ],
+                                      ),
+                                      
+                                          
+                                    ), //snapshot data should dispaly in this text field
+                                  ),
+                                  
+                                  div,
+                                  ],
+                                )
+                                 
+                                  /*ListTile(
                                   
                                   title: Text(dayCount.keys.toList()[index] +
                                       "     " +
                                       dayCount.values
                                           .toList()[index]
                                           .toString()), //snapshot data should dispaly in this text field
-                                ),
+                                ),*/
                               );
                             }),
                       );
@@ -264,6 +293,8 @@ class _checkState extends State<check> {
     });*/
     return (dayCount);
   }
+
+
 
   /* Future uploadData() async {
     Firestore.instance

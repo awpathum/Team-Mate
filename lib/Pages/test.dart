@@ -1,77 +1,110 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-class NotesList extends StatefulWidget {
-
+class notePad extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return new NotesListState();
-  }
+  _notePadState createState() => _notePadState();
 }
 
-class NotesListState extends State<NotesList> {
-
-  final DbManager manager = new DbManager();
-  List<Note> notes;
-
-  @override
-  void dispose() {
-    super.dispose();
-    manager.closeDb();
-  }
-
+class _notePadState extends State<notePad> {
+  final nameController = TextEditingController();
+  final textController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<List<Note>>(
-      future: manager.getNotes(),
-      builder: (context, snapshot) {
-        return new Scaffold(
-          appBar: new AppBar(
-            title: new Text("Notepad"),
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notepad'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          EvaIcons.fileAddOutline,
+        ),
+        onPressed: () {
+          newNoteDialog();
+        },
+      ),
+      body: Column(
+        children: <Widget>[
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            children: <Widget>[
+              Card(
+                child: ListTile(
+                  leading: Icon(EvaIcons.flagOutline),
+                  //title: //add not name here,
+                  trailing: Icon(Icons.more_vert),
+                  onTap: () {
+                    //show note
+                  },
+                ),
+              )
+            ],
           ),
-          body: buildNotesList(snapshot),
-          floatingActionButton: new FloatingActionButton(
-              onPressed: () =>
-                  Navigator.of(context)
-                      .push(new MaterialPageRoute(builder: (_) => new NoteDetailsWidget(manager))),
-              child: new Icon(Icons.add)),
+        ],
+      ),
+    );
+  }
+
+  Future<void> newNoteDialog() async {
+    /*if(field == 'IndexNo'){
+      return warning();
+    }*/
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: TextField(
+            controller: nameController,
+            decoration: InputDecoration(labelText: 'Enter Name Here'),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                //removeMem(id);
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text('Save', style: TextStyle(color: Colors.green)),
+              onPressed: () {
+                saveNote(nameController.text.toString(),
+                    textController.text.toString());
+                Navigator.pop(context);
+                //nedd to add a toast here
+              },
+            ),
+          ],
+          content: Column(
+            children: <Widget>[
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(labelText: 'Enter Some Text..'),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget buildNotesList(AsyncSnapshot<List<Note>> snapshot) {
-    switch (snapshot.connectionState) {
-      case ConnectionState.none:
-      case ConnectionState.waiting:
-        return new CircularProgressIndicator();
-      default:
-        if (snapshot.hasError) {
-          return new Text("Unexected error occurs: ${snapshot.error}");
-        }
-        notes = snapshot.data;
-        return new ListView.builder(
-            itemBuilder: (BuildContext context, int index) => _createItem(index),
-            itemCount: notes.length);
-    }
-  }
-
-  Widget _createItem(int index) {
-    return new Dismissible(
-      key: new UniqueKey(),
-      onDismissed: (direction) {
-        manager.deleteNote(notes[index].id)
-        .then((dynamic) => print("Deleted!"));
-      },
-      child: new ListTile(
-        title: new Text(notes[index].title),
-        subtitle: new Text(notes[index].descritpion.length > 50
-            ? notes[index].descritpion.substring(0, 50)
-            : notes[index].descritpion),
-        onTap: () {
-          Navigator.of(context)
-              .push(new MaterialPageRoute(builder: (_) => new NoteDetailsWidget(manager, note: notes[index])));
-        },
-      ),
-    );
+  saveNote(String name, String text) async {
+    Map<String, String> txt = {
+      name: text,
+    };
+    Firestore.instance
+        .collection('Notes')
+        .document(name)
+        .setData(txt)
+        .then((result) {
+      print('Done');
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
