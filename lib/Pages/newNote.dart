@@ -11,15 +11,16 @@ class newNote extends StatefulWidget {
   _newNoteState createState() => _newNoteState();
 }
 
-TextEditingValue edval(){
-  text :"";
-  selection: const TextSelection.collapsed(offset: -1);
-  composing: TextRange.empty;
-
-
+TextEditingValue edval() {
+  text:
+  "";
+  selection:
+  const TextSelection.collapsed(offset: -1);
+  composing:
+  TextRange.empty;
 }
 
-final textController = TextEditingController.fromValue(edval());
+final textController = TextEditingController();
 final noteController = TextEditingController();
 
 class _newNoteState extends State<newNote> {
@@ -36,10 +37,10 @@ class _newNoteState extends State<newNote> {
     super.initState();
   }
 
-  void dispose() {
+  /*void dispose() {
     textController.dispose();
     super.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +81,11 @@ class _newNoteState extends State<newNote> {
                 controller: textController,
                 decoration: InputDecoration(hintText: "Enter Some Text..."),
                 scrollPadding: EdgeInsets.all(20.0),
+                onChanged: (name) {
+                  setState(() {
+                    textController.text = name;
+                  });
+                },
                 //  keyboardType: TextInputType.numberWithOptions(),
                 maxLines: 100,
                 autofocus: true,
@@ -94,7 +100,7 @@ class _newNoteState extends State<newNote> {
   saveNote(String txt) async {
     print(widget.file);
     print('file printed');
-    
+
     await Firestore.instance
         .collection('Notes')
         .add({'text': txt}).then((result) {

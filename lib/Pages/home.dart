@@ -167,7 +167,7 @@ class _HomeState extends State<Home> {
         //minWidth: MediaQuery.of(context).size.width / 2,
         //height: MediaQuery.of(context).size.width / 4,
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => newNote())),
+            context, MaterialPageRoute(builder: (context) => selectProfile())),
       ),
     );
     final notifi = Material(
