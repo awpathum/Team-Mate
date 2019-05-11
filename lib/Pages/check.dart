@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:queries/collections.dart';
 import 'package:teamapp/Pages/collectionid.dart';
+import 'package:queries/queries.dart';
+
+import 'package:sortedmap/sortedmap.dart';
 
 class check extends StatefulWidget {
   @override
@@ -38,12 +42,11 @@ class _checkState extends State<check> {
     final div = Divider(
       height: 15.0,
       color: Colors.grey[400],
-      
     );
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Recode Book',style: TextStyle(color: Colors.white)),
+        title: Text('Recode Book', style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xff779fa1),
       ),
       body: Padding(
@@ -108,28 +111,25 @@ class _checkState extends State<check> {
                             itemBuilder: (context, index) {
                               print(index);
                               return Center(
-                                child: Column(
-                                  children: <Widget>[
-                                    ListTile(
-                                    title: Text(dayCount.keys.toList()[index]),
+                                  child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Text(newMapx.keys.toList()[index]),
                                     subtitle: Center(
                                       child: Row(
                                         children: <Widget>[
                                           SizedBox(width: 270.0),
-                                          
-                                          Text(dayCount.values.toList()[index].toString()),
-                                          
+                                          Text(newMapx.values
+                                              .toList()[index]
+                                              .toString()),
                                         ],
                                       ),
-                                      
-                                          
                                     ), //snapshot data should dispaly in this text field
                                   ),
-                                  
                                   div,
-                                  ],
-                                )
-                                 
+                                ],
+                              )
+
                                   /*ListTile(
                                   
                                   title: Text(dayCount.keys.toList()[index] +
@@ -138,7 +138,7 @@ class _checkState extends State<check> {
                                           .toList()[index]
                                           .toString()), //snapshot data should dispaly in this text field
                                 ),*/
-                              );
+                                  );
                             }),
                       );
                     }
@@ -287,14 +287,75 @@ class _checkState extends State<check> {
     // uploadData();
     keys = dayCount.keys.toList();
     vals = dayCount.values.toList();
+// var map = new SortedMap((Pair a, Pair b)=>Comparable.compare(a.value, b.value));
 
-    /*setState(() {
-      //getList();
-    });*/
-    return (dayCount);
+    //dayCount = sortMap(dayCount);
+    //dayCount = sortMap(dayCount);
+
+    var sortedEntries = dayCount.entries.toList()
+      ..sort((e1, e2) {
+        var diff = e2.value.compareTo(e1.value);
+        if (diff == 0) diff = e2.key.compareTo(e1.key);
+        return diff;
+      });
+
+      var newMap = Map<String, int>.fromEntries(sortedEntries);
+      newMapx = newMap;
+      print('Printing new map');
+      print(newMap);
+      
+      //for (var entry in sortedEntries) { dayCount..remove(entry.key)..[entry.key] = entry.value; }
+    return newMap;
   }
 
+  sortMap(Map _map) {
+    print(_map);
+    var map = Dictionary.fromMap(_map)
+        .orderByDescending((kv) => kv.value)
+        .thenByDescending((kv) => kv.key)
+        .toDictionary$1((kv) => kv.key, (kv) => kv.value)
+        .toMap();
+    print(map);
+    return map;
+  }
 
+  /* sortMap(Map dayCount){
+    print('sort map');
+    print(dayCount);
+    List vals = dayCount.values.toList();//sort((dynamic a, dynamic b) => a.compareTo(b));
+    List keys = dayCount.keys.toList();
+    vals.sort((dynamic a, dynamic b)=>a.compareTo(b)); 
+    keys.sort((dynamic a, dynamic b)=>a.compareTo(b)); 
+    Map<String,int> newmap;
+    print(dayCount.length);
+    for(int i = 0; i < dayCount.length; i++){
+      print('!');
+      for(int j = 0; j < dayCount.length; j++){
+        print('!!');
+        print(dayCount[j]);
+        if(vals[i] == dayCount[j].value){
+          newmap[dayCount[j].key] = vals[i]; 
+          print('*');
+        }
+        print('+');
+      }
+      
+    }
+    print(newmap);
+    print('new amp printed');
+  }*/
+
+  /* sortMap(Map _map) {
+    print(_map);
+    var map = Dictionary.fromMap(_map)
+        .orderByDescending((kv) => kv.value)
+        .thenByDescending((kv) => kv.key)
+        .toDictionary$1((kv) => kv.key, (kv) => kv.value)
+        .toMap();
+    print(map);
+    
+    return map;
+  }*/
 
   /* Future uploadData() async {
     Firestore.instance

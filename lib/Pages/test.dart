@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:teamapp/Pages/newNote.dart';
 
 class notePad extends StatefulWidget {
   @override
@@ -10,10 +11,10 @@ class notePad extends StatefulWidget {
 class _notePadState extends State<notePad> {
   final nameController = TextEditingController();
   final textController = TextEditingController();
-  
+  String file;
+  String note;
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Notepad'),
@@ -23,88 +24,76 @@ class _notePadState extends State<notePad> {
           EvaIcons.fileAddOutline,
         ),
         onPressed: () {
-          newNoteDialog();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => newNote()));
         },
       ),
       body: Column(
         children: <Widget>[
-          ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: <Widget>[
-              Card(
-                child: ListTile(
-                  leading: Icon(EvaIcons.flagOutline),
-                  //title: //add not name here,
-                  trailing: Icon(Icons.more_vert),
-                  onTap: () {
-                    //show note
-                  },
-                ),
-              )
-            ],
-          ),
+          FutureBuilder(
+            future: viewNotes(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text('No Data');
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return Center(
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                              leading: Icon(EvaIcons.flagOutline),
+                              title: Text(
+                                  snapshot.data[index].data["text"].toString()),
+                              trailing: Icon(Icons.more_vert),
+                              onTap: () {
+                                showNotes(snapshot.data[index].toString());
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            newNote(file:snapshot.data[index]['text'])));
+                              }),
+                        );
+                      }),
+                );
+              }
+            },
+          )
         ],
       ),
     );
   }
 
-  Future<void> newNoteDialog() async {
-    /*if(field == 'IndexNo'){
-      return warning();
-    }*/
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: TextField(
-            controller: nameController,
-            decoration: InputDecoration(labelText: 'Enter Name Here'),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel', style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                //removeMem(id);
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('Save', style: TextStyle(color: Colors.green)),
-              onPressed: () {
-                saveNote(nameController.text.toString(),
-                    textController.text.toString());
-                Navigator.pop(context);
-                //nedd to add a toast here
-              },
-            ),
-          ],
-          content: Column(
-            children: <Widget>[
-              TextField(
-                controller: textController,
-                decoration: InputDecoration(labelText: 'Enter Some Text..'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  Future viewNotes() async {
+    var firestore = Firestore.instance;
+    //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
+    QuerySnapshot qn = await firestore.collection('Notes').getDocuments();
+    print('viewNotes');
+    return qn.documents;
   }
 
-  saveNote(String name, String text) async {
-    Map<String, String> txt = {
-      name: text,
-    };
-    Firestore.instance
-        .collection('Notes')
-        .document(name)
-        .setData(txt)
-        .then((result) {
-      print('Done');
-    }).catchError((e) {
-      print(e);
+  Future showNotes(String text) async {
+    print('*****');
+    var firestore = Firestore.instance;
+
+    DocumentReference docRef = firestore.collection('Notes').document(text);
+
+    //note = docRef.get().toString();
+    print(text);
+    return docRef.get().then((datasnapshot) {
+      if (datasnapshot.exists) {
+       print('###');
+        note = datasnapshot.data["text"];
+        return 0;
+       // return info;
+      }
     });
   }
 }

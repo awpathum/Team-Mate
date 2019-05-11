@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teamapp/Pages/addNewMember.dart';
 import 'package:teamapp/Pages/check.dart';
 import 'package:teamapp/Pages/createSheet.dart';
+import 'package:teamapp/Pages/newNote.dart';
 import 'package:teamapp/Pages/selectProfile.dart';
 import 'package:teamapp/Pages/signIn.dart';
 import 'package:teamapp/Pages/test.dart';
@@ -166,7 +167,7 @@ class _HomeState extends State<Home> {
         //minWidth: MediaQuery.of(context).size.width / 2,
         //height: MediaQuery.of(context).size.width / 4,
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => selectProfile())),
+            context, MaterialPageRoute(builder: (context) => newNote())),
       ),
     );
     final notifi = Material(
@@ -209,7 +210,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black87,
-        title: Text('Home',style: TextStyle(color: Colors.white)),
+        title: Text('Home', style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.white,
       body: CustomScrollView(

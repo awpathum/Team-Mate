@@ -12,3 +12,6 @@ LinkedHashMap<String,int> dayCount = LinkedHashMap<String,int>(); //used to coun
 List<String> info = List<String>();
  List<String> newList = List<String>();
  int run = 0;
+ 
+
+ Map<String,int> newMapx = Map<String,int>();
