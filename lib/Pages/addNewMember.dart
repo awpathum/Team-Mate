@@ -210,6 +210,9 @@ class _addNewMemberState extends State<addNewMember> {
 
           if (FormState.validate()) {
             uploadData();
+            
+            
+            
           }
         },
         child: Icon(Icons.check,color:Colors.white,),

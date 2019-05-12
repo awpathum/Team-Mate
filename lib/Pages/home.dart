@@ -181,7 +181,7 @@ class _HomeState extends State<Home> {
               height: 40.0,
             ),
             Icon(
-              EvaIcons.bell,
+              Icons.library_books,
               color: Colors.white,
               size: 50.0,
             ),
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
               height: 40.0,
             ),
             Text(
-              'Notification',
+              'Notes',
               style: style,
             ),
           ],

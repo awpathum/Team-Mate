@@ -9,7 +9,7 @@ class newNote extends StatefulWidget {
   final String file;
   final String title;
 
-  newNote({Key key, this.file,this.title}) : super(key: key);
+  newNote({Key key, this.file, this.title}) : super(key: key);
 
   @override
   _newNoteState createState() => _newNoteState();
@@ -23,20 +23,21 @@ class _newNoteState extends State<newNote> {
     super.dispose();
   }*/
 
-
- /* final textController = TextEditingController.fromValue(TextEditingValue(
+  /* final textController = TextEditingController.fromValue(TextEditingValue(
     text: file,
     selection: TextSelection(
         baseOffset: widget.file.length, extentOffset: widget.file.length),
     composing: TextRange.collapsed(20),
   ));*/
 //final textController = TextEditingController.fromValue(TextEditingValue(text:"",selection:TextSelection.collapsed(offset: 15), composing: TextRange.empty));
-final textController = TextEditingController();
-final titleController = TextEditingController();
+  final textController = TextEditingController();
+  final titleController = TextEditingController();
+  int save = 0;
   void initState() {
     textController.text = widget.file;
     titleController.text = widget.title;
-   /* textController.addListener(() {
+
+    /* textController.addListener(() {
       String text = widget.file;
       textController.value = textController.value.copyWith(
         text: text,
@@ -52,84 +53,135 @@ final titleController = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Note'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              textController.dispose();
-            },
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
           ),
-          IconButton(
-            icon: Icon(
-              EvaIcons.homeOutline,
-              size: 15.0,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
-        ],
+          onPressed: () {
+            deleteWarning();
+          },
+        ),
+        title: Text(
+          'New Note',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red[200],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(EvaIcons.doneAllOutline),
+        child: Icon(Icons.done),
+        backgroundColor: Colors.red[200],
         onPressed: () {
-          saveNote(textController.text,titleController.text);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => notePad()));
+          saveNote(textController.text, titleController.text);
+         /* Navigator.push(
+              context, MaterialPageRoute(builder: (context) => notePad()));*/
         },
       ),
       body: Center(
         child: SingleChildScrollView(
+            child: Padding(
+          padding: const EdgeInsets.all(10.0),
           child: Column(
-
             children: <Widget>[
               TextField(
                 controller: titleController,
                 decoration: InputDecoration(hintText: 'Title'),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 20.0,
               ),
               TextField(
-                
                 enabled: true,
                 controller: textController,
                 decoration: InputDecoration(hintText: "Enter Some Text..."),
                 scrollPadding: EdgeInsets.all(20.0),
-                
-               /* onChanged: (name) {
+
+                /* onChanged: (name) {
                   setState(() {
                     textController.text = name;
                   });
                 },*/
                 //  keyboardType: TextInputType.numberWithOptions(),
                 maxLines: 100,
-               // autofocus: false,
+                // autofocus: false,
               )
             ],
           ),
-        ),
+        )),
       ),
     );
   }
 
-  saveNote(String txt,String title) async {
-    print(widget.file);
-    print('file printed');
-    await Firestore.instance.collection('Notes').document(titleController.text.toString()).setData({'title': title,'text': txt}).then((result){
-      print('Done');
-      Fluttertoast.showToast(
-          msg: "Done",
+  Future<void> deleteWarning() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Save Note?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                saveNote(textController.text, titleController.text);
+                save = 1;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => notePad()));
+              },
+            ),
+            FlatButton(
+              child: Text(
+                'No',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                // deleteNotes(title);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => notePad()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  saveNote(String txt, String title) async {
+    if (titleController.text.isNotEmpty) {
+      print(widget.file);
+      print('file printed');
+      await Firestore.instance
+          .collection('Notes')
+          .document(titleController.text.toString())
+          .setData({'title': title, 'text': txt}).then((result) {
+        print('Done');
+        Fluttertoast.showToast(
+            msg: "Done",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }).catchError((e) {
+        print(e);
+      });
+      Navigator.push(
+              context, MaterialPageRoute(builder: (context) => notePad()));
+    }else{
+       
+      return Fluttertoast.showToast(
+          msg: "Ttile is Empty",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
           backgroundColor: Colors.black54,
           textColor: Colors.white,
           fontSize: 16.0);
-    }).catchError((e){
-      print(e);
-    });
-   /* await Firestore.instance
+    }
+
+    /* await Firestore.instance
         .collection('Notes')
         .add({'text': txt}).then((result) {
       print('Done');
@@ -150,4 +202,3 @@ final titleController = TextEditingController();
 //final textController = TextEditingController();
 
 }
-
