@@ -38,6 +38,7 @@ class _notePadState extends State<notePad> {
         backgroundColor: Colors.red[200],
         child: Icon(
           EvaIcons.fileAddOutline,
+          color: Colors.white,
         ),
         onPressed: () {
           Navigator.push(
@@ -60,41 +61,37 @@ class _notePadState extends State<notePad> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Center(
-                    child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                                leading: Icon(EvaIcons.flagOutline),
-                                title: Text(snapshot.data[index].data["title"]
-                                    .toString()),
-                                trailing: IconButton(
-                                  icon: Icon(EvaIcons.fileRemoveOutline),
-                                  onPressed: () {
-                                    deleteWarning(
-                                        snapshot.data[index]['title']);
+                  return ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                              leading: Icon(EvaIcons.flagOutline),
+                              title: Text(snapshot.data[index].data["title"]
+                                  .toString()),
+                              trailing: IconButton(
+                                icon: Icon(EvaIcons.fileRemoveOutline),
+                                onPressed: () {
+                                  deleteWarning(snapshot.data[index]['title']);
 
-                                    ///deleteNotes(snapshot.data[index]['title']);
-                                  },
-                                ),
-                                onTap: () {
-                                  showNotes(snapshot.data[index].toString());
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => newNote(
-                                              file: snapshot.data[index]
-                                                  ['text'],
-                                              title: snapshot.data[index]
-                                                  ['title'])));
-                                }),
-                          );
-                        }),
-                  );
+                                  ///deleteNotes(snapshot.data[index]['title']);
+                                },
+                              ),
+                              onTap: () {
+                                showNotes(snapshot.data[index].toString());
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => newNote(
+                                            file: snapshot.data[index]['text'],
+                                            title: snapshot.data[index]
+                                                ['title'])));
+                              }),
+                        );
+                      });
                 }
               },
             ),
@@ -159,7 +156,11 @@ class _notePadState extends State<notePad> {
   Future viewNotes() async {
     var firestore = Firestore.instance;
     //firestore.collection('teamapp').orderBy(DocumentReference());  // order colllection as Name
-    QuerySnapshot qn = await firestore.collection('Notes').getDocuments();
+
+    QuerySnapshot qn =
+        await firestore.collection('Notes').orderBy("date").getDocuments();
+    
+
     print('viewNotes');
     return qn.documents;
   }

@@ -69,7 +69,7 @@ class _newNoteState extends State<newNote> {
         backgroundColor: Colors.red[200],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
+        child: Icon(Icons.done,color: Colors.white,),
         backgroundColor: Colors.red[200],
         onPressed: () {
           saveNote(textController.text, titleController.text);
@@ -148,13 +148,14 @@ class _newNoteState extends State<newNote> {
   }
 
   saveNote(String txt, String title) async {
+    DateTime date = DateTime.now();
     if (titleController.text.isNotEmpty) {
       print(widget.file);
       print('file printed');
       await Firestore.instance
           .collection('Notes')
           .document(titleController.text.toString())
-          .setData({'title': title, 'text': txt}).then((result) {
+          .setData({'title': title, 'text': txt,'date': date.toString()}).then((result) {
         print('Done');
         Fluttertoast.showToast(
             msg: "Done",
