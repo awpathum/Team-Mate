@@ -50,7 +50,7 @@ class _notePadState extends State<notePad> {
                           child: ListTile(
                               leading: Icon(EvaIcons.flagOutline),
                               title: Text(
-                                  snapshot.data[index].data["text"].toString()),
+                                  snapshot.data[index].data["title"].toString()),
                               trailing: Icon(Icons.more_vert),
                               onTap: () {
                                 showNotes(snapshot.data[index].toString());
@@ -58,7 +58,7 @@ class _notePadState extends State<notePad> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            newNote(file:snapshot.data[index]['text'])));
+                                            newNote(file:snapshot.data[index]['text'],title:snapshot.data[index]['title'])));
                               }),
                         );
                       }),

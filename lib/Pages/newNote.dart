@@ -7,8 +7,9 @@ import 'package:teamapp/Pages/test.dart';
 
 class newNote extends StatefulWidget {
   final String file;
+  final String title;
 
-  newNote({Key key, this.file}) : super(key: key);
+  newNote({Key key, this.file,this.title}) : super(key: key);
 
   @override
   _newNoteState createState() => _newNoteState();
@@ -31,8 +32,10 @@ class _newNoteState extends State<newNote> {
   ));*/
 //final textController = TextEditingController.fromValue(TextEditingValue(text:"",selection:TextSelection.collapsed(offset: 15), composing: TextRange.empty));
 final textController = TextEditingController();
+final titleController = TextEditingController();
   void initState() {
     textController.text = widget.file;
+    titleController.text = widget.title;
    /* textController.addListener(() {
       String text = widget.file;
       textController.value = textController.value.copyWith(
@@ -70,7 +73,7 @@ final textController = TextEditingController();
       floatingActionButton: FloatingActionButton(
         child: Icon(EvaIcons.doneAllOutline),
         onPressed: () {
-          saveNote(textController.text);
+          saveNote(textController.text,titleController.text);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => notePad()));
         },
@@ -78,7 +81,15 @@ final textController = TextEditingController();
       body: Center(
         child: SingleChildScrollView(
           child: Column(
+
             children: <Widget>[
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(hintText: 'Title'),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
               TextField(
                 
                 enabled: true,
@@ -102,11 +113,23 @@ final textController = TextEditingController();
     );
   }
 
-  saveNote(String txt) async {
+  saveNote(String txt,String title) async {
     print(widget.file);
     print('file printed');
-
-    await Firestore.instance
+    await Firestore.instance.collection('Notes').document(titleController.text.toString()).setData({'title': title,'text': txt}).then((result){
+      print('Done');
+      Fluttertoast.showToast(
+          msg: "Done",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }).catchError((e){
+      print(e);
+    });
+   /* await Firestore.instance
         .collection('Notes')
         .add({'text': txt}).then((result) {
       print('Done');
@@ -120,7 +143,7 @@ final textController = TextEditingController();
           fontSize: 16.0);
     }).catchError((e) {
       print(e);
-    });
+    });*/
   }
 
   final noteController = TextEditingController();
