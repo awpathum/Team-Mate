@@ -51,7 +51,8 @@ class _checkState extends State<check> {
                   width: 5.0,
                 ),
                 FlatButton(
-                    child: Text('ASC'),
+                  color: Colors.amber,
+                    child: Text('Change Order'),
                     onPressed: () {
                       
                       setState(() {
