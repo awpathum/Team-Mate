@@ -13,5 +13,7 @@ List<String> info = List<String>();
  List<String> newList = List<String>();
  int run = 0;
  Map revMap;
-
+String qo;
  Map<String,int> newMapx = Map<String,int>();
+
+ Map reversed;

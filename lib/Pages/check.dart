@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:queries/collections.dart';
@@ -28,16 +30,6 @@ class _checkState extends State<check> {
   Widget build(BuildContext context) {
     //getDetails();
     //countId();
-    final ascending = Radio(
-      value: 0,
-      onChanged: setAsc(),
-    );
-    final decending = Radio(
-      value: 1,
-      onChanged: setDec(),
-    );
-    final ascTitle = Text('Ascending', style: style);
-    final decTitle = Text('Decending', style: style);
 
     final div = Divider(
       height: 15.0,
@@ -58,19 +50,15 @@ class _checkState extends State<check> {
                 SizedBox(
                   width: 5.0,
                 ),
-                ascending,
-                SizedBox(
-                  width: 10.0,
-                ),
-                ascTitle,
-                SizedBox(
-                  width: 10.0,
-                ),
-                decending,
-                SizedBox(
-                  width: 10.0,
-                ),
-                decTitle,
+                FlatButton(
+                    child: Text('ASC'),
+                    onPressed: () {
+                      
+                      setState(() {
+                        print('ASC');
+
+                      });
+                    })
               ],
             ),
             Flexible(
@@ -150,10 +138,6 @@ class _checkState extends State<check> {
         ),
       ),
     );
-  }
-
-  setAsc() {
-    Firestore.instance.collection('Attendance').orderBy('201');
   }
 
   setDec() {}
@@ -281,6 +265,7 @@ class _checkState extends State<check> {
       print('C is ');
       print(c);
       c = 0;
+      
     }
 
     print(dayCount);
@@ -299,24 +284,63 @@ class _checkState extends State<check> {
         return diff;
       });
 
-      var newMap = Map<String, int>.fromEntries(sortedEntries);
-      newMapx = newMap;
-      print('Printing new map');
-      print(newMap);
-      
-      //for (var entry in sortedEntries) { dayCount..remove(entry.key)..[entry.key] = entry.value; }
+    var newMap = Map<String, int>.fromEntries(sortedEntries);
+    newMapx = newMap;
+    print('Printing new map');
+    print(newMap);
+
+    //for (var entry in sortedEntries) { dayCount..remove(entry.key)..[entry.key] = entry.value; }
+    
+    if(run ==1){
+      run = 0;
+      setAsc();
+      return newMapx;
+    }
+    run = 1;
     return newMap;
   }
 
-  sortMap(Map _map) {
-    print(_map);
-    var map = Dictionary.fromMap(_map)
-        .orderByDescending((kv) => kv.value)
-        .thenByDescending((kv) => kv.key)
-        .toDictionary$1((kv) => kv.key, (kv) => kv.value)
-        .toMap();
-    print(map);
-    return map;
+  setAsc() {
+    // final reverseM = LinkedHashMap.fromEntries(m.entries.reversed);
+    dayCount.clear();
+
+    int len = newMapx.length;
+    reversed = newMapx;
+    //print(newMapx.length);
+    for (int i = 0; i < len; i++) {
+      print(reversed);
+      String x = reversed.entries.last.key.toString();
+      int y = reversed.entries.last.value;
+      dayCount[x] = y;
+      reversed.remove(x);
+      print(reversed);
+    }
+    print('Day Count');
+    print(dayCount);
+    newMapx = dayCount;
+    return newMapx;
+      
+
+/*if (run == 1) {
+        dayCount.clear();
+        int len = newMapx.length;
+        reversed = newMapx;
+        newMapx.clear();
+        //print(newMapx.length);
+        for (int i = 0; i < len; i++) {
+          print(reversed);
+          String x = reversed.entries.last.key.toString();
+          int y = reversed.entries.last.value;
+          newMapx[x] = y;
+          reversed.remove(x);
+          print(reversed);
+        }
+        run = 0;
+}*/
+    /*setState(() {
+      
+      newMapx = dayCount;
+    });*/
   }
 
   /* sortMap(Map dayCount){

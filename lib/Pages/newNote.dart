@@ -2,31 +2,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:teamapp/Pages/collectionid.dart';
 import 'package:teamapp/Pages/test.dart';
 
 class newNote extends StatefulWidget {
   final String file;
+
   newNote({Key key, this.file}) : super(key: key);
+
   @override
   _newNoteState createState() => _newNoteState();
 }
 
-TextEditingValue edval() {
-  text:
-  "";
-  selection:
-  const TextSelection.collapsed(offset: -1);
-  composing:
-  TextRange.empty;
-}
-
-final textController = TextEditingController();
-final noteController = TextEditingController();
+String hello = 'hello';
 
 class _newNoteState extends State<newNote> {
+  /*void dispose() {
+    textController.dispose();
+    super.dispose();
+  }*/
+
+
+ /* final textController = TextEditingController.fromValue(TextEditingValue(
+    text: file,
+    selection: TextSelection(
+        baseOffset: widget.file.length, extentOffset: widget.file.length),
+    composing: TextRange.collapsed(20),
+  ));*/
+final textController = TextEditingController();
   void initState() {
     textController.addListener(() {
-      final text = widget.file;
+      String text = widget.file;
       textController.value = textController.value.copyWith(
         text: text,
         selection:
@@ -36,11 +42,6 @@ class _newNoteState extends State<newNote> {
     });
     super.initState();
   }
-
-  /*void dispose() {
-    textController.dispose();
-    super.dispose();
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -117,4 +118,8 @@ class _newNoteState extends State<newNote> {
       print(e);
     });
   }
+
+  final noteController = TextEditingController();
+//final textController = TextEditingController();
+
 }
