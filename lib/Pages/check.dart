@@ -50,16 +50,17 @@ class _checkState extends State<check> {
                 SizedBox(
                   width: 5.0,
                 ),
-                FlatButton(
-                  color: Colors.amber,
+                /*FlatButton(
+                    color: Colors.amber,
                     child: Text('Change Order'),
                     onPressed: () {
-                      
                       setState(() {
                         print('ASC');
-
                       });
-                    })
+                    }),*/
+                SizedBox(
+                  width: 50.0,
+                ),
               ],
             ),
             Flexible(
@@ -73,6 +74,7 @@ class _checkState extends State<check> {
                       print('Error');
                     }*/
                     print('future builder');
+
                     if (snapshot.hasData) {
                       return Container(
                           child: Column(
@@ -90,36 +92,60 @@ class _checkState extends State<check> {
                       return CircularProgressIndicator();
                     } else {
                       print('#');
-                      return Center(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: allId
-                                .length, //((snapshot.data.values.join("").length)/2).toInt(),
-                            itemBuilder: (context, index) {
-                              print(index);
-                              return Center(
-                                  child: Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Text(newMapx.keys.toList()[index]),
-                                    subtitle: Center(
-                                      child: Row(
-                                        children: <Widget>[
-                                          SizedBox(width: 270.0),
-                                          Text(newMapx.values
-                                              .toList()[index]
-                                              .toString()),
-                                        ],
-                                      ),
-                                    ), //snapshot data should dispaly in this text field
-                                  ),
-                                  div,
-                                ],
-                              )
 
-                                  /*ListTile(
+                      return Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              FlatButton(
+                                  color: Colors.amber,
+                                  child: Text('Change Order'),
+                                  onPressed: () {
+                                    setState(() {
+                                      print('ASC');
+                                    });
+                                  }),
+                              SizedBox(
+                                width: 50.0,
+                              ),
+                              Chip(
+                                avatar: CircleAvatar(
+                                  backgroundColor: Colors.grey.shade800,
+                                  child: Text(pracDays.length.toString()),
+                                ),
+                                label: Text('Total Practice Days'),
+                              ),
+                            ],
+                          ),
+                          ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: allId
+                                  .length, //((snapshot.data.values.join("").length)/2).toInt(),
+                              itemBuilder: (context, index) {
+                                print(index);
+                                return Center(
+                                    child: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text(newMapx.keys.toList()[index]),
+                                      subtitle: Center(
+                                        child: Row(
+                                          children: <Widget>[
+                                            SizedBox(width: 270.0),
+                                            Text(newMapx.values
+                                                .toList()[index]
+                                                .toString()),
+                                          ],
+                                        ),
+                                      ), //snapshot data should dispaly in this text field
+                                    ),
+                                    div,
+                                  ],
+                                )
+
+                                    /*ListTile(
                                   
                                   title: Text(dayCount.keys.toList()[index] +
                                       "     " +
@@ -127,8 +153,9 @@ class _checkState extends State<check> {
                                           .toList()[index]
                                           .toString()), //snapshot data should dispaly in this text field
                                 ),*/
-                                  );
-                            }),
+                                    );
+                              }),
+                        ],
                       );
                     }
                   },
@@ -213,6 +240,7 @@ class _checkState extends State<check> {
       pracDays.add(f.documentID);
     });
     print(pracDays);
+    count = pracDays.length;
     for (int i = 0; i < count; i++) {
       print('1st for loop');
 
@@ -266,7 +294,6 @@ class _checkState extends State<check> {
       print('C is ');
       print(c);
       c = 0;
-      
     }
 
     print(dayCount);
@@ -291,8 +318,8 @@ class _checkState extends State<check> {
     print(newMap);
 
     //for (var entry in sortedEntries) { dayCount..remove(entry.key)..[entry.key] = entry.value; }
-    
-    if(run ==1){
+
+    if (run == 1) {
       run = 0;
       setAsc();
       return newMapx;
@@ -320,7 +347,6 @@ class _checkState extends State<check> {
     print(dayCount);
     newMapx = dayCount;
     return newMapx;
-      
 
 /*if (run == 1) {
         dayCount.clear();

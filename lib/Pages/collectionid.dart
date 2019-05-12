@@ -17,3 +17,4 @@ String qo;
  Map<String,int> newMapx = Map<String,int>();
 
  Map reversed;
+ int count;
