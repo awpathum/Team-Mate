@@ -14,95 +14,111 @@ class _selectProfileState extends State<selectProfile> {
       TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
   @override
   Widget build(BuildContext context) {
+    final div = Divider(
+      height: 10.0,
+      color: Colors.grey[400],
+      indent: 70.0,
+    );
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
+      appBar: AppBar(
+        leading: IconButton(
           icon: Icon(
             EvaIcons.arrowBackOutline,
           ),
           color: Colors.white,
-        onPressed: (){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-        },),
-          title: Text('Select Profile',style: TextStyle(color: Colors.white),),
-          backgroundColor: Color(0xff88498f),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          },
         ),
-        body: Center(
-          child: FutureBuilder(
-              future: getPosts(),
-              builder: (_, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else {
-                  return Center(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_, index) {
-                        print(snapshot.data[index].data['Profilepic']);
-                        if (snapshot.data[index].data['Profilepic'] != null) {
-                          return Center(
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.only(left: 50.0),
-                              leading: Container(
-                                  width: 50.0,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      image: DecorationImage(
-                                          image: NetworkImage(snapshot
-                                              .data[index].data['Profilepic']),
-                                          fit: BoxFit.cover),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(75.0)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 7.0,
-                                            color: Colors.black)
-                                      ])),
-                              title: Text(
-                                snapshot.data[index].data['Name'],
-                                style: style,
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Profile(
-                                            id: snapshot
-                                                .data[index].data['IndexNo'])));
-                              },
-                            ),
-                          );
-                        } else {
-                          return Center(
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.only(left: 50.0),
-                              leading: Icon(EvaIcons.person),
-                              title: Text(
-                                snapshot.data[index].data['Name'],
-                                style: style,
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Profile(
-                                            id: snapshot
-                                                .data[index].data['IndexNo'])));
-                              },
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  );
-                }
-              }),
-        ));
+        title: Text(
+          'Select Profile',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff88498f),
+      ),
+      body: FutureBuilder(
+          future: getPosts(),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (_, index) {
+                  print(snapshot.data[index].data['Profilepic']);
+                  if (snapshot.data[index].data['Profilepic'] != null) {
+                    return Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        ListTile(
+                          contentPadding: const EdgeInsets.only(left: 20.0),
+                          leading: Container(
+                              width: 70.0,
+                              height: 70.0,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  image: DecorationImage(
+                                      image: NetworkImage(snapshot
+                                          .data[index].data['Profilepic']),
+                                      fit: BoxFit.cover),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(75.0)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 7.0, color: Colors.black)
+                                  ])),
+                          title: Text(
+                            snapshot.data[index].data['Name'],
+                            style: style,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Profile(
+                                        id: snapshot
+                                            .data[index].data['IndexNo'])));
+                          },
+                        ),
+                        div,
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: <Widget>[
+                        ListTile(
+                          contentPadding: const EdgeInsets.only(left: 20.0),
+                          leading: Icon(EvaIcons.person),
+                          title: Text(
+                            snapshot.data[index].data['Name'],
+                            style: style,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Profile(
+                                        id: snapshot
+                                            .data[index].data['IndexNo'])));
+                          },
+                        ),
+                        div,
+                      ],
+                    );
+                  }
+                },
+              );
+            }
+          }),
+    );
   }
 
   Future getPosts() async {
