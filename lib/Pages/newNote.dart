@@ -29,9 +29,11 @@ class _newNoteState extends State<newNote> {
         baseOffset: widget.file.length, extentOffset: widget.file.length),
     composing: TextRange.collapsed(20),
   ));*/
+//final textController = TextEditingController.fromValue(TextEditingValue(text:"",selection:TextSelection.collapsed(offset: 15), composing: TextRange.empty));
 final textController = TextEditingController();
   void initState() {
-    textController.addListener(() {
+    textController.text = widget.file;
+   /* textController.addListener(() {
       String text = widget.file;
       textController.value = textController.value.copyWith(
         text: text,
@@ -39,7 +41,7 @@ final textController = TextEditingController();
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
+    });*/
     super.initState();
   }
 
@@ -78,18 +80,20 @@ final textController = TextEditingController();
           child: Column(
             children: <Widget>[
               TextField(
+                
                 enabled: true,
                 controller: textController,
                 decoration: InputDecoration(hintText: "Enter Some Text..."),
                 scrollPadding: EdgeInsets.all(20.0),
-                onChanged: (name) {
+                
+               /* onChanged: (name) {
                   setState(() {
                     textController.text = name;
                   });
-                },
+                },*/
                 //  keyboardType: TextInputType.numberWithOptions(),
                 maxLines: 100,
-                autofocus: true,
+               // autofocus: false,
               )
             ],
           ),
@@ -123,3 +127,4 @@ final textController = TextEditingController();
 //final textController = TextEditingController();
 
 }
+
