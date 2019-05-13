@@ -101,10 +101,11 @@ class CreateSheetState extends State<CreateSheet> {
             EvaIcons.arrowBackOutline,
           ),
           color: Colors.white,
-        onPressed: (){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-        },),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          },
+        ),
         backgroundColor: Color(0xff564154),
         title: Text('Create Sheet', style: TextStyle(color: Colors.white)),
       ),
@@ -140,40 +141,38 @@ class CreateSheetState extends State<CreateSheet> {
                       );*/
                       return CircularProgressIndicator();
                     } else {
-                      return Center(
-                        child: ListView.builder(
-                           padding: const EdgeInsets.only(bottom: 20.0),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (_, index) {
-                              return Column(
-                                children: <Widget>[
-                                  CheckboxListTile(
-                                      value: names.contains(
-                                          snapshot.data[index].data["Name"]),
-                                      title: Text(
-                                          snapshot.data[index].data["Name"]),
-                                      subtitle: Center(
-                                          child: Row(
-                                        children: <Widget>[
-                                          SizedBox(width: 190.0),
-                                          Text(snapshot
-                                              .data[index].data["IndexNo"]),
-                                        ],
-                                      )),
-                                      onChanged: (bool selected) {
-                                        _onCategorySelected(
-                                            selected,
-                                            snapshot.data[index].data["Name"],
-                                            snapshot
-                                                .data[index].data["IndexNo"]);
-                                      }),
-                                  div,
-                                ],
-                              );
-                            }),
-                      );
+                      return ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (_, index) {
+                            return Column(
+                              children: <Widget>[
+                                CheckboxListTile(
+                                    value: names.contains(
+                                        snapshot.data[index].data["FirstName"]),
+                                    title: Text(
+                                        snapshot.data[index].data["FirstName"]),
+                                    subtitle: Center(
+                                        child: Row(
+                                      children: <Widget>[
+                                        SizedBox(width: 190.0),
+                                        Text(snapshot
+                                            .data[index].data["IndexNo"]),
+                                      ],
+                                    )),
+                                    onChanged: (bool selected) {
+                                      _onCategorySelected(
+                                          selected,
+                                          snapshot
+                                              .data[index].data["FirstName"],
+                                          snapshot.data[index].data["IndexNo"]);
+                                    }),
+                                div,
+                              ],
+                            );
+                          });
                     }
                   },
                 ),

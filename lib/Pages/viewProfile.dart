@@ -91,7 +91,7 @@ class _ProfileState extends State<Profile> {
                         width: 150.0,
                         height: 150.0,
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.white,
                             image: DecorationImage(
                                 image:
                                     NetworkImage(snapshot.data["Profilepic"]),

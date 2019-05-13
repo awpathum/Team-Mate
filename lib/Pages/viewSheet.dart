@@ -37,12 +37,12 @@ class _ViewSheetState extends State<ViewSheet> {
         print('Date Selected:{$today}');
       });
     }
-  } final div = Divider(
-      height: 15.0,
-      color: Colors.grey[400],
-      
-    );
+  }
 
+  final div = Divider(
+    height: 15.0,
+    color: Colors.grey[400],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +63,19 @@ class _ViewSheetState extends State<ViewSheet> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-          icon: Icon(
-            EvaIcons.arrowBackOutline,
+            icon: Icon(
+              EvaIcons.arrowBackOutline,
+            ),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            },
           ),
-          color: Colors.white,
-        onPressed: (){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-        },),
-          title: Text('View Sheet',style: TextStyle(color: Colors.white),),
+          title: Text(
+            'View Sheet',
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Color(0xffff8164),
         ),
         body: Padding(
@@ -115,37 +119,29 @@ class _ViewSheetState extends State<ViewSheet> {
                           ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       } else {
-                        return Center(
-                          child: ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount:
-                                  count, //((snapshot.data.values.join("").length)/2).toInt(),
-                              itemBuilder: (context, index) {
-                                return Center(
-                                  
-                                  child: Column(
-                                    children: <Widget>[
-                                      ListTile(
+                        return ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount:
+                                count, //((snapshot.data.values.join("").length)/2).toInt(),
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: <Widget>[
+                                  ListTile(
                                     title: Text(snapshot.data["fname"][index]),
                                     subtitle: Center(
-                                      child: Row(
-                                        children: <Widget>[
-                                          SizedBox(width: 220.0),
-                                          Text(snapshot.data["mindex"][index]),
-                                        ],
-                                      )
-                                          
-                                    ), //snapshot data should dispaly in this text field
+                                        child: Row(
+                                      children: <Widget>[
+                                        SizedBox(width: 220.0),
+                                        Text(snapshot.data["mindex"][index]),
+                                      ],
+                                    )), //snapshot data should dispaly in this text field
                                   ),
                                   div,
-                                    ],
-                                  ) 
-                                  
-                                );
-                              }),
-                        );
+                                ],
+                              );
+                            });
                       }
                     },
                   ),

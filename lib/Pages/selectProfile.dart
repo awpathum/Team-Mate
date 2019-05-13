@@ -64,7 +64,7 @@ class _selectProfileState extends State<selectProfile> {
                               width: 70.0,
                               height: 70.0,
                               decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: Colors.white,
                                   image: DecorationImage(
                                       image: NetworkImage(snapshot
                                           .data[index].data['Profilepic']),

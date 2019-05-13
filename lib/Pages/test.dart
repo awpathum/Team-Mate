@@ -69,7 +69,7 @@ class _notePadState extends State<notePad> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
-                              leading: Icon(EvaIcons.flagOutline),
+                              leading: Icon(EvaIcons.arrowCircleRight,color: Colors.green),
                               title: Text(snapshot.data[index].data["title"]
                                   .toString()),
                               trailing: IconButton(

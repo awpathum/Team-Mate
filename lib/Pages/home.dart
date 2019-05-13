@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
               height: 40.0,
             ),
             Text(
-              'Notes',
+              'Notepad',
               style: style,
             ),
           ],
@@ -209,8 +209,20 @@ class _HomeState extends State<Home> {
        );*/
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black87,
-        title: Text('Home', style: TextStyle(color: Colors.white)),
+        leading: Column(
+
+          children: <Widget>[
+            SizedBox(height: 15.0,),
+            Row(
+              children: <Widget>[
+                SizedBox(width: 2.0,),
+                Text('Home', style: TextStyle(color: Color(0xff3d3b3c),fontSize: 20.0,fontWeight: FontWeight.bold)),
+              ],
+            )
+          ],
+        ),//Container(child: Text('Home', style: TextStyle(color: Colors.white,fontSize: 20.0)),),
+        backgroundColor: Colors.white,
+        //title: Text('Home', style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.white,
       body: CustomScrollView(
