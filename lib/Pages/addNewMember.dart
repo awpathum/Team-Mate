@@ -225,15 +225,28 @@ class _addNewMemberState extends State<addNewMember> {
           padding: const EdgeInsets.all(10.0),
           child: image == null ? Text('No image selected.') : Image.file(image),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
+        Column(
+          children: <Widget>[
+             Padding(
+          padding: const EdgeInsets.only(left: 10.0),
           child: IconButton(
-            onPressed: getImage,
+            onPressed: getImageFC,
             tooltip: 'Pick Image',
             icon: Icon(Icons.add_a_photo),
-            iconSize: 40.0,
+            iconSize: 30.0,
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+            onPressed: getImageFG,
+            tooltip: 'Pick Image',
+            icon: Icon(EvaIcons.imageOutline),
+            iconSize: 30.0,
+          ),
+        ),
+          ],
+        )
       ],
     );
 
@@ -314,14 +327,20 @@ class _addNewMemberState extends State<addNewMember> {
     );
   }
 
-  Future getImage() async {
+  Future getImageFC() async {
     File picture = await ImagePicker.pickImage(
         source: ImageSource.camera, maxWidth: 150, maxHeight: 150.0);
     setState(() {
       image = picture;
     });
   }
-
+  Future getImageFG() async {
+    File picture = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxWidth: 150, maxHeight: 150.0);
+    setState(() {
+      image = picture;
+    });
+  }
   /*Future<String> uploadImage() async {
     final StorageReference ref =
         FirebaseStorage.instance.ref().child('{$useIndex}_profilepic.jpg');
