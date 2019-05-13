@@ -120,7 +120,7 @@ class _notePadState extends State<notePad> {
             FlatButton(
               child: Text('Cancel'),
               onPressed: () {
-                deleteNotes(title);
+                //deleteNotes(title);
                 Navigator.of(context).pop();
               },
             ),

@@ -16,7 +16,7 @@ class _ProfileState extends State<Profile> {
   TextStyle style =
       TextStyle(color: Colors.black, fontFamily: 'Montserrat', fontSize: 20.0);
   final _formKey = GlobalKey<FormState>();
-  var tele;
+  String tele;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _ProfileState extends State<Profile> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                tele = snapshot.data['Telephone'];
+                  tele = snapshot.data['Telephone'].toString();
                 return Column(
                   children: <Widget>[
                     SizedBox(
@@ -434,10 +434,10 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  launchURL(var number) async {
-    var url = number;
-    if (await canLaunch(number)) {
-      await launch(number);
+ static launchURL(String number) async {
+    String url = 'tel:$number';
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
       throw 'Could not launch $url';
     }
